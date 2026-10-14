@@ -1,0 +1,94 @@
+<header class="fixed top-0 left-0 right-0 z-50 border-b border-white/10 bg-slate-950/80 backdrop-blur-lg">
+
+  <nav class="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-8">
+
+    <!-- Logo -->
+    <a
+      routerLink="/"
+      class="flex items-center gap-3">
+
+      <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-600">
+
+        ✈️
+
+      </div>
+
+      <span class="text-xl font-bold tracking-tight text-white">
+        Trip Planner
+      </span>
+
+    </a>
+
+
+    <!-- Desktop Authentication -->
+    <div class="hidden items-center gap-3 sm:flex">
+
+      <!-- Login -->
+      <button
+        routerLink="/login"
+        class="rounded-lg px-5 py-2.5 text-sm font-medium text-slate-300 transition hover:bg-white/10 hover:text-white">
+
+        Login
+
+      </button>
+
+
+      <!-- Sign Up -->
+      <button
+        routerLink="/signup"
+        class="rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-500">
+
+        Sign Up
+
+      </button>
+
+    </div>
+
+
+    <!-- Mobile Menu Button -->
+    <button
+      (click)="toggleMenu()"
+      class="flex h-10 w-10 items-center justify-center rounded-lg border border-white/10 text-slate-300 sm:hidden">
+
+      {{ menuOpen ? '✕' : '☰' }}
+
+    </button>
+
+  </nav>
+
+
+  <!-- Mobile Menu -->
+  @if (menuOpen) {
+
+    <div class="border-t border-white/10 bg-slate-950 px-6 py-5 sm:hidden">
+
+      <div class="flex flex-col gap-3">
+
+        <!-- Mobile Login -->
+        <button
+          routerLink="/login"
+          (click)="menuOpen = false"
+          class="w-full rounded-lg px-4 py-3 text-left text-sm font-medium text-slate-300 transition hover:bg-white/10 hover:text-white">
+
+          Login
+
+        </button>
+
+
+        <!-- Mobile Sign Up -->
+        <button
+          routerLink="/signup"
+          (click)="menuOpen = false"
+          class="w-full rounded-lg bg-blue-600 px-4 py-3 text-left text-sm font-semibold text-white transition hover:bg-blue-500">
+
+          Sign Up
+
+        </button>
+
+      </div>
+
+    </div>
+
+  }
+
+</header>

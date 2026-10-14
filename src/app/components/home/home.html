@@ -1,0 +1,1210 @@
+<app-header></app-header>
+
+<!-- ========================================================= -->
+<!-- TRIP PLANNER - HOME MIDDLE SECTION                       -->
+<!-- ========================================================= -->
+
+<main class="bg-white text-black">
+
+
+  <!-- ======================================================= -->
+  <!-- HERO / INTRODUCTION                                     -->
+  <!-- ======================================================= -->
+
+  <section class="relative overflow-hidden border-b border-slate-200">
+
+    <!-- Decorative blue shapes -->
+
+    <div
+      class="pointer-events-none absolute -right-32 -top-32 h-96 w-96 rounded-full bg-blue-100 blur-3xl">
+    </div>
+
+    <div
+      class="pointer-events-none absolute -left-32 bottom-0 h-80 w-80 rounded-full bg-blue-50 blur-3xl">
+    </div>
+
+
+    <div
+      class="relative mx-auto max-w-7xl px-6 pb-24 pt-32 lg:px-8 lg:pb-32 lg:pt-40">
+
+      <div class="grid items-center gap-16 lg:grid-cols-2">
+
+
+        <!-- LEFT -->
+
+        <div>
+
+          <!-- AI Badge -->
+
+          <div
+            class="mb-7 inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-700">
+
+            <span
+              class="flex h-2 w-2 rounded-full bg-blue-600">
+            </span>
+
+            AI-powered travel intelligence
+
+          </div>
+
+
+          <!-- Heading -->
+
+          <h1
+            class="max-w-3xl text-5xl font-black leading-[1.05] tracking-tight text-black sm:text-6xl lg:text-7xl">
+
+            Tell us where you want to go.
+
+            <span class="mt-2 block text-blue-600">
+              We'll plan the journey.
+            </span>
+
+          </h1>
+
+
+          <!-- Description -->
+
+          <p
+            class="mt-7 max-w-xl text-lg leading-8 text-slate-600">
+
+            Trip Planner is an AI travel agent that understands your
+            request, collects what is missing and intelligently calls
+            the right travel tools to build your trip.
+
+          </p>
+
+
+          <!-- Example query -->
+
+          <div
+            class="mt-9 max-w-xl rounded-2xl border border-slate-200 bg-white p-3 shadow-xl shadow-slate-200/60">
+
+            <div
+              class="flex flex-col gap-3 sm:flex-row sm:items-center">
+
+              <div
+                class="flex min-h-14 flex-1 items-center gap-3 rounded-xl bg-slate-50 px-4">
+
+                <span class="text-xl">
+                  ✨
+                </span>
+
+                <div class="min-w-0">
+
+                  <p class="truncate text-sm font-medium text-slate-800">
+
+                    Plan a trip to Goa under ₹20,000
+
+                  </p>
+
+                  <p class="text-xs text-slate-400">
+                    Example request
+                  </p>
+
+                </div>
+
+              </div>
+
+
+              <!-- Start Planning -->
+
+              <a
+                routerLink="/login"
+                class="rounded-xl bg-blue-600 px-6 py-4 text-sm font-bold text-white transition hover:bg-blue-700 hover:shadow-lg hover:shadow-blue-200">
+
+                Start Planning
+
+                <span class="ml-1">
+                  →
+                </span>
+
+              </a>
+
+            </div>
+
+          </div>
+
+
+          <!-- Authentication message -->
+
+          <div
+            class="mt-4 flex items-center gap-2 text-sm text-slate-500">
+
+            <span>
+              🔐
+            </span>
+
+            <span>
+              Sign in to start your personalized trip planning session.
+            </span>
+
+          </div>
+
+
+          <!-- Quick capabilities -->
+
+          <div
+            class="mt-10 flex flex-wrap gap-x-7 gap-y-4">
+
+            <div class="flex items-center gap-2 text-sm font-medium text-slate-600">
+
+              <span class="text-blue-600">
+                ✈
+              </span>
+
+              Flight search
+
+            </div>
+
+            <div class="flex items-center gap-2 text-sm font-medium text-slate-600">
+
+              <span class="text-blue-600">
+                ☀
+              </span>
+
+              Weather check
+
+            </div>
+
+            <div class="flex items-center gap-2 text-sm font-medium text-slate-600">
+
+              <span class="text-blue-600">
+                🏨
+              </span>
+
+              Hotel search
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- RIGHT - AI TOOL CALLING VISUAL -->
+
+        <div class="relative">
+
+
+          <!-- Main card -->
+
+          <div
+            class="relative overflow-hidden rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl shadow-slate-200/70 sm:p-7">
+
+
+            <!-- Card header -->
+
+            <div
+              class="flex items-center justify-between border-b border-slate-100 pb-5">
+
+              <div class="flex items-center gap-3">
+
+                <div
+                  class="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-600 text-xl text-white">
+
+                  ✦
+
+                </div>
+
+                <div>
+
+                  <p class="font-bold text-black">
+                    AI Trip Agent
+                  </p>
+
+                  <p class="text-xs text-slate-500">
+                    Tool orchestration
+                  </p>
+
+                </div>
+
+              </div>
+
+
+              <div
+                class="flex items-center gap-2 rounded-full bg-green-50 px-3 py-1.5 text-xs font-semibold text-green-700">
+
+                <span class="h-2 w-2 rounded-full bg-green-500">
+                </span>
+
+                Ready
+
+              </div>
+
+            </div>
+
+
+            <!-- User request -->
+
+            <div class="mt-6">
+
+              <p
+                class="mb-2 text-xs font-bold uppercase tracking-wider text-slate-400">
+
+                User request
+
+              </p>
+
+              <div
+                class="rounded-2xl bg-slate-50 p-4">
+
+                <p class="text-sm leading-6 text-slate-700">
+
+                  "Plan a trip to Goa under ₹20,000."
+
+                </p>
+
+              </div>
+
+            </div>
+
+
+            <!-- AI interpretation -->
+
+            <div class="mt-6">
+
+              <div class="mb-3 flex items-center justify-between">
+
+                <p
+                  class="text-xs font-bold uppercase tracking-wider text-slate-400">
+
+                  AI understanding
+
+                </p>
+
+                <span class="text-xs font-semibold text-blue-600">
+                  Intent detected
+                </span>
+
+              </div>
+
+
+              <div class="grid grid-cols-2 gap-3">
+
+                <div
+                  class="rounded-xl border border-blue-100 bg-blue-50 p-3">
+
+                  <p class="text-xs text-blue-500">
+                    Destination
+                  </p>
+
+                  <p class="mt-1 text-sm font-bold text-black">
+                    Goa
+                  </p>
+
+                </div>
+
+                <div
+                  class="rounded-xl border border-blue-100 bg-blue-50 p-3">
+
+                  <p class="text-xs text-blue-500">
+                    Budget
+                  </p>
+
+                  <p class="mt-1 text-sm font-bold text-black">
+                    ₹20,000
+                  </p>
+
+                </div>
+
+                <div
+                  class="rounded-xl border border-amber-100 bg-amber-50 p-3">
+
+                  <p class="text-xs text-amber-600">
+                    Travel dates
+                  </p>
+
+                  <p class="mt-1 text-sm font-bold text-black">
+                    Required
+                  </p>
+
+                </div>
+
+                <div
+                  class="rounded-xl border border-slate-200 bg-white p-3">
+
+                  <p class="text-xs text-slate-500">
+                    Origin
+                  </p>
+
+                  <p class="mt-1 text-sm font-bold text-black">
+                    Required
+                  </p>
+
+                </div>
+
+              </div>
+
+            </div>
+
+
+            <!-- Tool calling -->
+
+            <div class="mt-7">
+
+              <div class="mb-4 flex items-center gap-3">
+
+                <div class="h-px flex-1 bg-slate-200">
+                </div>
+
+                <span
+                  class="text-xs font-bold uppercase tracking-wider text-slate-400">
+
+                  Tool calls
+
+                </span>
+
+                <div class="h-px flex-1 bg-slate-200">
+                </div>
+
+              </div>
+
+
+              <div class="space-y-3">
+
+
+                <!-- Tool 1 -->
+
+                <div
+                  class="flex items-center gap-3 rounded-xl border border-slate-200 bg-white p-3">
+
+                  <div
+                    class="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
+
+                    📍
+
+                  </div>
+
+                  <div class="flex-1">
+
+                    <p class="text-sm font-semibold text-black">
+                      Location Tool
+                    </p>
+
+                    <p class="text-xs text-slate-500">
+                      Request user's origin
+                    </p>
+
+                  </div>
+
+                  <span class="text-xs font-semibold text-amber-600">
+                    Waiting
+                  </span>
+
+                </div>
+
+
+                <!-- Tool 2 -->
+
+                <div
+                  class="flex items-center gap-3 rounded-xl border border-slate-200 bg-white p-3">
+
+                  <div
+                    class="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
+
+                    ☀
+
+                  </div>
+
+                  <div class="flex-1">
+
+                    <p class="text-sm font-semibold text-black">
+                      Weather Tool
+                    </p>
+
+                    <p class="text-xs text-slate-500">
+                      Validate travel conditions
+                    </p>
+
+                  </div>
+
+                  <span class="text-xs font-semibold text-slate-400">
+                    Next
+                  </span>
+
+                </div>
+
+
+                <!-- Tool 3 -->
+
+                <div
+                  class="flex items-center gap-3 rounded-xl border border-slate-200 bg-white p-3">
+
+                  <div
+                    class="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
+
+                    ✈
+
+                  </div>
+
+                  <div class="flex-1">
+
+                    <p class="text-sm font-semibold text-black">
+                      Flight Search
+                    </p>
+
+                    <p class="text-xs text-slate-500">
+                      Find flights within budget
+                    </p>
+
+                  </div>
+
+                  <span class="text-xs font-semibold text-slate-400">
+                    Next
+                  </span>
+
+                </div>
+
+
+                <!-- Tool 4 -->
+
+                <div
+                  class="flex items-center gap-3 rounded-xl border border-slate-200 bg-white p-3">
+
+                  <div
+                    class="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
+
+                    🏨
+
+                  </div>
+
+                  <div class="flex-1">
+
+                    <p class="text-sm font-semibold text-black">
+                      Hotel Search
+                    </p>
+
+                    <p class="text-xs text-slate-500">
+                      Search after flight booking
+                    </p>
+
+                  </div>
+
+                  <span class="text-xs font-semibold text-slate-400">
+                    Later
+                  </span>
+
+                </div>
+
+              </div>
+
+            </div>
+
+
+            <!-- Bottom status -->
+
+            <div
+              class="mt-6 flex items-center gap-3 rounded-xl bg-black px-4 py-3">
+
+              <span
+                class="flex h-2.5 w-2.5 rounded-full bg-blue-500">
+              </span>
+
+              <p class="text-xs font-medium text-white">
+
+                AI is waiting for the information it needs.
+
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <!-- Floating status -->
+
+          <div
+            class="absolute -bottom-6 -left-6 hidden items-center gap-3 rounded-2xl border border-slate-200 bg-white px-4 py-3 shadow-xl sm:flex">
+
+            <div
+              class="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+
+              🤖
+
+            </div>
+
+            <div>
+
+              <p class="text-xs text-slate-400">
+                AI Agent
+              </p>
+
+              <p class="text-sm font-bold text-black">
+                Intelligent planning
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <!-- Floating tools -->
+
+          <div
+            class="absolute -right-5 -top-5 hidden rounded-2xl border border-blue-100 bg-blue-50 px-4 py-3 shadow-xl sm:block">
+
+            <p class="text-xs font-bold text-blue-600">
+              4+ travel tools
+            </p>
+
+            <p class="mt-1 text-xs text-slate-600">
+              Orchestrated automatically
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- ======================================================= -->
+  <!-- HOW IT WORKS                                            -->
+  <!-- ======================================================= -->
+
+  <section class="border-b border-slate-200 bg-slate-50">
+
+    <div
+      class="mx-auto max-w-7xl px-6 py-24 lg:px-8">
+
+
+      <!-- Section heading -->
+
+      <div class="mx-auto max-w-3xl text-center">
+
+        <p
+          class="text-sm font-bold uppercase tracking-widest text-blue-600">
+
+          How it works
+
+        </p>
+
+        <h2
+          class="mt-4 text-4xl font-black tracking-tight text-black sm:text-5xl">
+
+          One request.
+
+          <span class="text-blue-600">
+            Multiple intelligent tools.
+          </span>
+
+        </h2>
+
+        <p
+          class="mt-5 text-lg leading-8 text-slate-600">
+
+          You don't need to know which API to use or what information
+          to provide first. The AI determines what is needed and
+          orchestrates the journey for you.
+
+        </p>
+
+      </div>
+
+
+      <!-- Workflow -->
+
+      <div
+        class="mt-16 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
+
+
+        <!-- Step 1 -->
+
+        <div
+          class="group rounded-2xl border border-slate-200 bg-white p-6 transition hover:-translate-y-1 hover:border-blue-200 hover:shadow-xl hover:shadow-blue-100">
+
+          <div
+            class="flex h-12 w-12 items-center justify-center rounded-xl bg-black text-lg font-bold text-white">
+
+            01
+
+          </div>
+
+          <h3 class="mt-6 text-lg font-bold text-black">
+            Understand
+          </h3>
+
+          <p class="mt-3 text-sm leading-6 text-slate-500">
+
+            The AI interprets your natural-language request and
+            extracts destination, budget, dates and preferences.
+
+          </p>
+
+          <div
+            class="mt-5 rounded-lg bg-slate-50 px-3 py-2 text-xs font-medium text-blue-600">
+
+            Intent extraction
+
+          </div>
+
+        </div>
+
+
+        <!-- Step 2 -->
+
+        <div
+          class="group rounded-2xl border border-slate-200 bg-white p-6 transition hover:-translate-y-1 hover:border-blue-200 hover:shadow-xl hover:shadow-blue-100">
+
+          <div
+            class="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-600 text-lg font-bold text-white">
+
+            02
+
+          </div>
+
+          <h3 class="mt-6 text-lg font-bold text-black">
+            Ask
+          </h3>
+
+          <p class="mt-3 text-sm leading-6 text-slate-500">
+
+            If something important is missing, the AI asks you
+            for exactly what it needs before continuing.
+
+          </p>
+
+          <div
+            class="mt-5 rounded-lg bg-blue-50 px-3 py-2 text-xs font-medium text-blue-600">
+
+            Context-aware questions
+
+          </div>
+
+        </div>
+
+
+        <!-- Step 3 -->
+
+        <div
+          class="group rounded-2xl border border-slate-200 bg-white p-6 transition hover:-translate-y-1 hover:border-blue-200 hover:shadow-xl hover:shadow-blue-100">
+
+          <div
+            class="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-600 text-lg font-bold text-white">
+
+            03
+
+          </div>
+
+          <h3 class="mt-6 text-lg font-bold text-black">
+            Call tools
+          </h3>
+
+          <p class="mt-3 text-sm leading-6 text-slate-500">
+
+            The AI selects and calls the right travel tools based
+            on the current state of your trip.
+
+          </p>
+
+          <div
+            class="mt-5 rounded-lg bg-blue-50 px-3 py-2 text-xs font-medium text-blue-600">
+
+            Dynamic tool calling
+
+          </div>
+
+        </div>
+
+
+        <!-- Step 4 -->
+
+        <div
+          class="group rounded-2xl border border-slate-200 bg-white p-6 transition hover:-translate-y-1 hover:border-blue-200 hover:shadow-xl hover:shadow-blue-100">
+
+          <div
+            class="flex h-12 w-12 items-center justify-center rounded-xl bg-black text-lg font-bold text-white">
+
+            04
+
+          </div>
+
+          <h3 class="mt-6 text-lg font-bold text-black">
+            Complete
+          </h3>
+
+          <p class="mt-3 text-sm leading-6 text-slate-500">
+
+            Your selected flights, hotels and bookings come together
+            into one complete trip.
+
+          </p>
+
+          <div
+            class="mt-5 rounded-lg bg-slate-50 px-3 py-2 text-xs font-medium text-blue-600">
+
+            End-to-end trip
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- ======================================================= -->
+  <!-- AI TOOL ECOSYSTEM                                       -->
+  <!-- ======================================================= -->
+
+  <section class="bg-white">
+
+    <div
+      class="mx-auto max-w-7xl px-6 py-24 lg:px-8">
+
+      <div class="grid items-center gap-16 lg:grid-cols-2">
+
+
+        <!-- Left -->
+
+        <div>
+
+          <p
+            class="text-sm font-bold uppercase tracking-widest text-blue-600">
+
+            Intelligent orchestration
+
+          </p>
+
+          <h2
+            class="mt-4 text-4xl font-black tracking-tight text-black sm:text-5xl">
+
+            The AI decides
+
+            <span class="text-blue-600">
+              what to call next.
+            </span>
+
+          </h2>
+
+          <p
+            class="mt-6 max-w-xl text-lg leading-8 text-slate-600">
+
+            Instead of forcing you through a long form, Trip Planner
+            uses the information already available and dynamically
+            determines the next action.
+
+          </p>
+
+
+          <!-- Example -->
+
+          <div
+            class="mt-8 rounded-2xl border border-slate-200 bg-slate-50 p-5">
+
+            <p
+              class="text-xs font-bold uppercase tracking-wider text-slate-400">
+
+              Example
+
+            </p>
+
+
+            <div class="mt-4 space-y-4">
+
+
+              <div class="flex gap-3">
+
+                <div
+                  class="mt-1 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-black text-xs text-white">
+
+                  1
+
+                </div>
+
+                <div>
+
+                  <p class="text-sm font-semibold text-black">
+                    User asks for a Goa trip
+                  </p>
+
+                  <p class="mt-1 text-xs text-slate-500">
+                    Destination and budget detected.
+                  </p>
+
+                </div>
+
+              </div>
+
+
+              <div class="ml-3 h-5 border-l border-slate-300">
+              </div>
+
+
+              <div class="flex gap-3">
+
+                <div
+                  class="mt-1 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-blue-600 text-xs text-white">
+
+                  2
+
+                </div>
+
+                <div>
+
+                  <p class="text-sm font-semibold text-black">
+                    AI detects missing information
+                  </p>
+
+                  <p class="mt-1 text-xs text-slate-500">
+                    It asks for origin and travel dates.
+                  </p>
+
+                </div>
+
+              </div>
+
+
+              <div class="ml-3 h-5 border-l border-slate-300">
+              </div>
+
+
+              <div class="flex gap-3">
+
+                <div
+                  class="mt-1 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-blue-600 text-xs text-white">
+
+                  3
+
+                </div>
+
+                <div>
+
+                  <p class="text-sm font-semibold text-black">
+                    AI calls the required tools
+                  </p>
+
+                  <p class="mt-1 text-xs text-slate-500">
+                    Weather → Flights → Hotels → Booking.
+                  </p>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- Right - Tool grid -->
+
+        <div class="grid grid-cols-2 gap-4">
+
+
+          <!-- Location -->
+
+          <div
+            class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-blue-200 hover:shadow-lg">
+
+            <div
+              class="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 text-xl">
+
+              📍
+
+            </div>
+
+            <h3 class="mt-5 font-bold text-black">
+              Location
+            </h3>
+
+            <p class="mt-2 text-sm leading-6 text-slate-500">
+              Determine the user's origin.
+            </p>
+
+          </div>
+
+
+          <!-- Weather -->
+
+          <div
+            class="mt-8 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-blue-200 hover:shadow-lg">
+
+            <div
+              class="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 text-xl">
+
+              ☀️
+
+            </div>
+
+            <h3 class="mt-5 font-bold text-black">
+              Weather
+            </h3>
+
+            <p class="mt-2 text-sm leading-6 text-slate-500">
+              Validate travel conditions.
+            </p>
+
+          </div>
+
+
+          <!-- Flights -->
+
+          <div
+            class="-mt-8 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-blue-200 hover:shadow-lg">
+
+            <div
+              class="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 text-xl">
+
+              ✈️
+
+            </div>
+
+            <h3 class="mt-5 font-bold text-black">
+              Flights
+            </h3>
+
+            <p class="mt-2 text-sm leading-6 text-slate-500">
+              Find options within budget.
+            </p>
+
+          </div>
+
+
+          <!-- Hotels -->
+
+          <div
+            class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-blue-200 hover:shadow-lg">
+
+            <div
+              class="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 text-xl">
+
+              🏨
+
+            </div>
+
+            <h3 class="mt-5 font-bold text-black">
+              Hotels
+            </h3>
+
+            <p class="mt-2 text-sm leading-6 text-slate-500">
+              Search stays after flight booking.
+            </p>
+
+          </div>
+
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- ======================================================= -->
+  <!-- WHY TRIP PLANNER                                       -->
+  <!-- ======================================================= -->
+
+  <section class="bg-slate-50">
+
+    <div
+      class="mx-auto max-w-7xl px-6 py-24 lg:px-8">
+
+      <div class="text-center">
+
+        <p
+          class="text-sm font-bold uppercase tracking-widest text-blue-600">
+
+          Built around your journey
+
+        </p>
+
+        <h2
+          class="mt-4 text-4xl font-black tracking-tight text-black sm:text-5xl">
+
+          Less searching.
+
+          <span class="text-blue-600">
+            More travelling.
+          </span>
+
+        </h2>
+
+      </div>
+
+
+      <div
+        class="mt-14 grid gap-6 md:grid-cols-3">
+
+
+        <!-- Card 1 -->
+
+        <div
+          class="rounded-2xl border border-slate-200 bg-white p-7">
+
+          <div
+            class="flex h-12 w-12 items-center justify-center rounded-xl bg-black text-xl text-white">
+
+            ✦
+
+          </div>
+
+          <h3 class="mt-6 text-xl font-bold text-black">
+            Natural conversation
+          </h3>
+
+          <p class="mt-3 text-sm leading-6 text-slate-500">
+
+            No complicated travel forms. Describe your trip naturally
+            and let the AI determine what information it needs.
+
+          </p>
+
+        </div>
+
+
+        <!-- Card 2 -->
+
+        <div
+          class="rounded-2xl border border-slate-200 bg-white p-7">
+
+          <div
+            class="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-600 text-xl text-white">
+
+            ⚡
+
+          </div>
+
+          <h3 class="mt-6 text-xl font-bold text-black">
+            Intelligent decisions
+          </h3>
+
+          <p class="mt-3 text-sm leading-6 text-slate-500">
+
+            The system doesn't blindly call every API. It decides
+            which tool is needed based on the current trip state.
+
+          </p>
+
+        </div>
+
+
+        <!-- Card 3 -->
+
+        <div
+          class="rounded-2xl border border-slate-200 bg-white p-7">
+
+          <div
+            class="flex h-12 w-12 items-center justify-center rounded-xl bg-black text-xl text-white">
+
+            ✓
+
+          </div>
+
+          <h3 class="mt-6 text-xl font-bold text-black">
+            One connected journey
+          </h3>
+
+          <p class="mt-3 text-sm leading-6 text-slate-500">
+
+            From the first question to flight and hotel booking,
+            your trip information stays connected throughout.
+
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- ======================================================= -->
+  <!-- FINAL CTA                                               -->
+  <!-- ======================================================= -->
+
+  <section class="bg-white">
+
+    <div
+      class="mx-auto max-w-5xl px-6 py-24 text-center lg:px-8 lg:py-32">
+
+      <div
+        class="rounded-3xl border border-slate-200 bg-white p-8 shadow-2xl shadow-slate-200/60 sm:p-12">
+
+        <div
+          class="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-600 text-2xl text-white">
+
+          ✈
+
+        </div>
+
+        <h2
+          class="mt-7 text-4xl font-black tracking-tight text-black sm:text-5xl">
+
+          Your next journey starts
+
+          <span class="text-blue-600">
+            with one request.
+          </span>
+
+        </h2>
+
+        <p
+          class="mx-auto mt-5 max-w-2xl text-lg leading-8 text-slate-600">
+
+          Sign in to start an AI-powered planning session and let
+          Trip Planner take care of the details.
+
+        </p>
+
+
+        <div
+          class="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
+
+          <!-- Sign In & Start Planning -->
+
+          <a
+            routerLink="/login"
+            class="rounded-xl bg-blue-600 px-8 py-4 font-bold text-white transition hover:bg-blue-700 hover:shadow-xl hover:shadow-blue-200">
+
+            Sign In & Start Planning
+
+            <span class="ml-1">
+              →
+            </span>
+
+          </a>
+
+
+          <!-- Create Account -->
+
+          <a
+            routerLink="/signup"
+            class="rounded-xl border border-slate-300 bg-white px-8 py-4 font-bold text-black transition hover:border-blue-300 hover:bg-blue-50">
+
+            Create Account
+
+          </a>
+
+        </div>
+
+
+        <p class="mt-5 text-xs text-slate-400">
+
+          Free to explore · Secure authentication · AI-powered planning
+
+        </p>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+</main>
+
+<app-footer></app-footer>

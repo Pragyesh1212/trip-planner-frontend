@@ -1,0 +1,58 @@
+<main class="min-h-screen bg-slate-50 px-4 py-8 sm:px-6 lg:px-8">
+  <div class="mx-auto max-w-5xl">
+    <header class="mb-8 flex flex-wrap items-center justify-between gap-4">
+      <div class="flex items-start gap-3">
+        <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-100 text-2xl" aria-hidden="true">🏨</div>
+        <div>
+          <p class="text-xs font-bold uppercase tracking-widest text-blue-700">My Travel</p>
+          <h1 class="mt-1 text-2xl font-bold text-slate-900 sm:text-3xl">Hotel Bookings</h1>
+          <p class="mt-1 text-sm text-slate-500">View your saved hotel reservation details.</p>
+        </div>
+      </div>
+      <div class="flex gap-2">
+        <button type="button" (click)="loadBookings()" [disabled]="loading()" class="rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-100 disabled:opacity-50">{{ loading() ? 'Refreshing…' : 'Refresh' }}</button>
+        <button type="button" (click)="goToPlanner()" class="rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-blue-700">Back to planner</button>
+      </div>
+    </header>
+
+    @if (loading()) {
+      <section class="rounded-2xl border border-slate-200 bg-white p-8 text-center shadow-sm" aria-live="polite">
+        <div class="mx-auto mb-3 h-8 w-8 animate-spin rounded-full border-4 border-slate-200 border-t-blue-600" aria-hidden="true"></div>
+        <p class="text-sm text-slate-600">Loading your hotel bookings…</p>
+      </section>
+    } @else if (errorMessage()) {
+      <section class="rounded-2xl border border-red-200 bg-red-50 p-5 text-sm text-red-800" role="alert">
+        <p class="font-semibold">Could not load bookings</p><p class="mt-1">{{ errorMessage() }}</p>
+        <button type="button" (click)="loadBookings()" class="mt-4 rounded-lg bg-red-700 px-4 py-2 font-semibold text-white hover:bg-red-800">Try again</button>
+      </section>
+    } @else if (bookings().length === 0) {
+      <section class="rounded-2xl border border-slate-200 bg-white px-6 py-14 text-center shadow-sm">
+        <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-slate-100 text-3xl" aria-hidden="true">🧳</div>
+        <h2 class="mt-4 text-lg font-semibold text-slate-900">No hotel bookings yet</h2>
+        <p class="mx-auto mt-2 max-w-md text-sm leading-6 text-slate-500">When you book a hotel while planning a trip, its details will appear here. You can also skip hotels and continue planning your trip.</p>
+        <button type="button" (click)="goToPlanner()" class="mt-5 rounded-xl bg-blue-600 px-5 py-3 text-sm font-semibold text-white hover:bg-blue-700">Plan a trip</button>
+      </section>
+    } @else {
+      <div class="mb-4"><p class="text-sm text-slate-600">{{ bookings().length }} saved booking{{ bookings().length === 1 ? '' : 's' }}</p></div>
+      <div class="space-y-4">
+        @for (booking of bookings(); track booking.booking_id) {
+          <article class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+            <div class="flex flex-wrap items-start justify-between gap-3 border-b border-slate-100 px-5 py-4 sm:px-6">
+              <div class="min-w-0"><h2 class="text-lg font-bold text-slate-900">{{ booking.hotel_name || 'Hotel name unavailable' }}</h2><p class="mt-1 break-all text-xs text-slate-500">Booking ID: {{ booking.booking_id }}</p></div>
+              <span class="inline-flex items-center rounded-full border px-3 py-1 text-xs font-bold uppercase tracking-wide" [class.border-green-200]="(booking.status || '').toUpperCase() === 'CONFIRMED'" [class.bg-green-50]="(booking.status || '').toUpperCase() === 'CONFIRMED'" [class.text-green-700]="(booking.status || '').toUpperCase() === 'CONFIRMED'" [class.border-slate-200]="(booking.status || '').toUpperCase() !== 'CONFIRMED'" [class.bg-slate-50]="(booking.status || '').toUpperCase() !== 'CONFIRMED'" [class.text-slate-700]="(booking.status || '').toUpperCase() !== 'CONFIRMED'">{{ booking.status || 'Status unavailable' }}</span>
+            </div>
+            <div class="grid gap-4 px-5 py-5 sm:grid-cols-2 lg:grid-cols-3 sm:px-6">
+              <div class="rounded-xl bg-slate-50 p-4"><p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Check-in</p><p class="mt-2 font-semibold text-slate-900">{{ booking.checkin ? (booking.checkin | date:'dd MMM yyyy':'UTC') : 'Not provided' }}</p></div>
+              <div class="rounded-xl bg-slate-50 p-4"><p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Check-out</p><p class="mt-2 font-semibold text-slate-900">{{ booking.checkout ? (booking.checkout | date:'dd MMM yyyy':'UTC') : 'Not provided' }}</p></div>
+              <div class="rounded-xl bg-blue-50 p-4"><p class="text-xs font-semibold uppercase tracking-wide text-blue-700">Price</p><p class="mt-2 text-lg font-bold text-blue-800">{{ formatPrice(booking.price, booking.currency) }}</p></div>
+              <div class="rounded-xl border border-slate-100 p-4"><p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Guest</p><p class="mt-2 font-medium text-slate-900">{{ ((booking.guest?.first_name || '') + ' ' + (booking.guest?.last_name || '')).trim() || 'Not provided' }}</p>@if (booking.guest?.email) { <p class="mt-1 break-all text-sm text-slate-500">{{ booking.guest?.email }}</p> }</div>
+              <div class="rounded-xl border border-slate-100 p-4"><p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Confirmation code</p><p class="mt-2 break-all font-semibold text-slate-900">{{ booking.confirmation_code || 'Not provided' }}</p></div>
+              <div class="rounded-xl border border-slate-100 p-4"><p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Provider</p><p class="mt-2 font-semibold uppercase text-slate-900">{{ booking.provider || 'Not provided' }}</p></div>
+            </div>
+            <footer class="border-t border-slate-100 bg-slate-50 px-5 py-3 sm:px-6"><p class="text-xs leading-5 text-slate-500">Test-mode bookings may not represent a real reservation or payment. Verify the booking status with the provider.</p></footer>
+          </article>
+        }
+      </div>
+    }
+  </div>
+</main>

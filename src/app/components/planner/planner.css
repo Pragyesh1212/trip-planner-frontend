@@ -1,0 +1,287 @@
+:host {
+  display: block;
+  height: 100vh;
+}
+
+/* Hotel confirmation styling only. Other planner UI remains untouched. */
+.hotel-confirmation-card {
+  box-sizing: border-box;
+  overflow: hidden;
+  width: 100%;
+  border: 1px solid #bbf7d0;
+  border-radius: 20px;
+  background: #ffffff;
+  color: #0f172a;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+  animation: hotel-confirmation-enter 220ms ease-out;
+}
+
+.hotel-confirmation-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 20px;
+  background: linear-gradient(120deg, #f0fdf4 0%, #eff6ff 100%);
+  border-bottom: 1px solid #dcfce7;
+}
+
+.hotel-confirmation-icon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 46px;
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  background: #ffffff;
+  color: #2563eb;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.10);
+}
+
+.hotel-confirmation-icon svg {
+  width: 26px;
+  height: 26px;
+}
+
+.hotel-confirmation-heading {
+  flex: 1;
+  min-width: 0;
+}
+
+.hotel-confirmation-eyebrow {
+  margin: 0 0 3px;
+  color: #15803d;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.13em;
+}
+
+.hotel-confirmation-heading h3 {
+  margin: 0;
+  color: #0f172a;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.hotel-confirmation-message {
+  margin: 5px 0 0;
+  color: #475569;
+  font-size: 13px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.hotel-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  flex-shrink: 0;
+  border: 1px solid #bbf7d0;
+  border-radius: 999px;
+  padding: 6px 10px;
+  background: #ffffff;
+  color: #15803d;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.hotel-status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 0 3px #dcfce7;
+}
+
+.hotel-confirmation-property {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin: 18px 20px 0;
+  border: 1px solid #e2e8f0;
+  border-radius: 13px;
+  padding: 13px 14px;
+  background: #ffffff;
+}
+
+.hotel-detail-icon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 32px;
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  background: #eff6ff;
+  color: #2563eb;
+  font-size: 23px;
+  line-height: 1;
+}
+
+.hotel-detail-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.hotel-detail-label {
+  display: block;
+  color: #64748b;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.09em;
+  line-height: 1.4;
+}
+
+.hotel-detail-value {
+  display: block;
+  color: #0f172a;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.hotel-confirmation-details {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  padding: 14px 20px 0;
+}
+
+.hotel-detail-tile {
+  min-width: 0;
+  border: 1px solid #e2e8f0;
+  border-radius: 13px;
+  padding: 12px;
+  background: #f8fafc;
+}
+
+.hotel-detail-tile .hotel-detail-value {
+  margin-top: 5px;
+}
+
+.hotel-break-all {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.hotel-confirmation-price {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin: 16px 20px 0;
+  border: 1px solid #bfdbfe;
+  border-radius: 14px;
+  padding: 14px 16px;
+  background: #eff6ff;
+}
+
+.hotel-price-note {
+  margin: 4px 0 0;
+  color: #64748b;
+  font-size: 11px;
+}
+
+.hotel-price-value {
+  margin: 0;
+  color: #1d4ed8;
+  font-size: 21px;
+  font-weight: 800;
+  line-height: 1.2;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.hotel-price-value span {
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.hotel-confirmation-footer {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  margin-top: 18px;
+  border-top: 1px solid #e2e8f0;
+  padding: 13px 20px 16px;
+  background: #fafafa;
+}
+
+.hotel-footer-check {
+  display: grid;
+  place-items: center;
+  flex: 0 0 18px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #dcfce7;
+  color: #15803d;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.hotel-confirmation-footer p {
+  margin: 0;
+  color: #64748b;
+  font-size: 11px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+@keyframes hotel-confirmation-enter {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 640px) {
+  .hotel-confirmation-header {
+    gap: 10px;
+    padding: 16px;
+  }
+
+  .hotel-confirmation-icon {
+    flex-basis: 40px;
+    width: 40px;
+    height: 40px;
+  }
+
+  .hotel-status-pill {
+    padding: 5px 7px;
+    font-size: 9px;
+  }
+
+  .hotel-confirmation-property {
+    margin-right: 16px;
+    margin-left: 16px;
+  }
+
+  .hotel-confirmation-details {
+    grid-template-columns: minmax(0, 1fr);
+    padding-right: 16px;
+    padding-left: 16px;
+  }
+
+  .hotel-confirmation-price {
+    align-items: flex-start;
+    margin-right: 16px;
+    margin-left: 16px;
+    padding: 12px;
+  }
+
+  .hotel-price-value {
+    font-size: 18px;
+  }
+
+  .hotel-confirmation-footer {
+    padding-right: 16px;
+    padding-left: 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hotel-confirmation-card { animation: none; }
+}

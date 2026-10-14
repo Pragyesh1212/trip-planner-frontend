@@ -1,0 +1,1111 @@
+<div class="flex h-screen overflow-hidden bg-slate-50">
+
+  @if (sidebarOpen) {
+    <div
+      class="fixed inset-0 z-30 bg-black/30 lg:hidden"
+      (click)="toggleSidebar()">
+    </div>
+  }
+
+  <aside
+    class="fixed inset-y-0 left-0 z-40 flex w-72 flex-col border-r border-slate-200 bg-white transition-transform duration-300 lg:static lg:translate-x-0"
+    [class.-translate-x-full]="!sidebarOpen">
+
+    <div class="flex h-16 items-center justify-between border-b border-slate-200 px-5">
+      <div class="flex items-center gap-3">
+        <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-600 text-lg">
+          ✈️
+        </div>
+        <span class="text-lg font-bold text-slate-900">Trip Planner</span>
+      </div>
+
+      <button
+        type="button"
+        (click)="toggleSidebar()"
+        class="rounded-lg p-2 text-slate-500 hover:bg-slate-100 lg:hidden">
+        ✕
+      </button>
+    </div>
+
+    <div class="p-4">
+      <button
+        type="button"
+        (click)="newTrip()"
+        class="flex w-full items-center justify-center gap-2 rounded-xl bg-blue-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-blue-700">
+        <span class="text-lg">+</span>
+        New Trip
+      </button>
+    </div>
+
+    <div class="flex-1 overflow-y-auto px-3">
+      <div class="mb-6">
+        <p class="px-3 pb-2 text-xs font-semibold uppercase tracking-wider text-slate-400">
+          Conversations
+        </p>
+
+        @if (conversations().length === 0) {
+          <p class="px-3 py-2 text-xs text-slate-400">Your saved trips will appear here.</p>
+        } @else {
+          @for (conversation of conversations(); track conversation.conversation_id) {
+            <button
+              type="button"
+              (click)="openConversation(conversation.conversation_id)"
+              class="mb-1 flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left text-sm transition hover:bg-slate-100"
+              [class.bg-blue-50]="conversation.conversation_id === conversationId"
+              [class.text-blue-700]="conversation.conversation_id === conversationId"
+              [class.text-slate-600]="conversation.conversation_id !== conversationId">
+              <span>💬</span>
+              <span class="min-w-0 flex-1 truncate">{{ conversation.title }}</span>
+            </button>
+          }
+        }
+      </div>
+
+      <div class="mb-6">
+        <p class="px-3 pb-2 text-xs font-semibold uppercase tracking-wider text-slate-400">
+          My Travel
+        </p>
+
+        <button
+          type="button"
+          (click)="showFlightBookingsView()"
+          [class.bg-blue-50]="showFlightBookings"
+          [class.text-blue-700]="showFlightBookings"
+          class="flex w-full items-center gap-3 rounded-lg px-3 py-3 text-left text-sm text-slate-700 transition hover:bg-slate-100">
+          <span>✈️</span> Flight Bookings
+        </button>
+
+        <button
+          type="button"
+          (click)="showHotelBookingsView()"
+          [class.bg-blue-50]="showHotelBookings"
+          [class.text-blue-700]="showHotelBookings"
+          class="flex w-full items-center gap-3 rounded-lg px-3 py-3 text-left text-sm text-slate-700 transition hover:bg-slate-100">
+          <span>🏨</span> Hotel Bookings
+        </button>
+
+        <button
+          type="button"
+          (click)="showMyTripsView()"
+          [class.bg-blue-50]="showMyTrips"
+          [class.text-blue-700]="showMyTrips"
+          class="flex w-full items-center gap-3 rounded-lg px-3 py-3 text-left text-sm text-slate-700 transition hover:bg-slate-100">
+          <span>🧳</span> My Trips
+        </button>
+      </div>
+
+      <div>
+        <p class="px-3 pb-2 text-xs font-semibold uppercase tracking-wider text-slate-400">
+          Account
+        </p>
+
+        <button
+          type="button"
+          class="flex w-full items-center gap-3 rounded-lg px-3 py-3 text-left text-sm text-slate-700 transition hover:bg-slate-100">
+          <span>⚙️</span> Settings
+        </button>
+
+        <button
+          type="button"
+          (click)="logout()"
+          class="flex w-full items-center gap-3 rounded-lg px-3 py-3 text-left text-sm text-red-600 transition hover:bg-red-50">
+          <span>🚪</span> Logout
+        </button>
+      </div>
+    </div>
+
+    <div class="border-t border-slate-200 p-4">
+      <div class="flex items-center gap-3">
+        <div class="flex h-10 w-10 items-center justify-center rounded-full bg-blue-100 font-semibold text-blue-700">
+          {{ userInitial }}
+        </div>
+        <div class="min-w-0">
+          <p class="truncate text-sm font-semibold text-slate-800">{{ userName }}</p>
+          <p class="truncate text-xs text-slate-500">Travel account</p>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <main class="flex min-w-0 flex-1 flex-col">
+    <header class="flex h-16 shrink-0 items-center justify-between border-b border-slate-200 bg-white px-4 sm:px-6">
+      <button
+        type="button"
+        (click)="toggleSidebar()"
+        class="rounded-lg p-2 text-slate-600 transition hover:bg-slate-100">
+        ☰
+      </button>
+
+      <div class="text-sm font-medium text-slate-500">AI Travel Agent</div>
+      <div class="w-10"></div>
+    </header>
+
+    <section class="min-h-0 flex-1 overflow-y-auto">
+      @if (showHotelBookings) {
+        <app-hotel-bookings (back)="backToPlanner()"></app-hotel-bookings>
+      } @else if (showFlightBookings) {
+        <app-flight-bookings (back)="backToPlanner()"></app-flight-bookings>
+      } @else if (showMyTrips) {
+        <div class="mx-auto w-full max-w-4xl px-4 py-8 sm:px-6 lg:px-8">
+          <div class="mb-6 flex items-center gap-3">
+            <button type="button" (click)="backToPlanner()" class="rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-600 transition hover:bg-slate-50">← Back</button>
+            <div>
+              <h1 class="text-2xl font-bold text-slate-900">My Trips</h1>
+              <p class="mt-1 text-sm text-slate-500">Your saved trip-planning conversations</p>
+            </div>
+          </div>
+
+          @if (conversations().length === 0) {
+            <div class="rounded-2xl border border-dashed border-slate-300 bg-white px-6 py-12 text-center">
+              <div class="mb-3 text-4xl">🧳</div>
+              <h2 class="text-lg font-semibold text-slate-800">No trips yet</h2>
+              <p class="mt-2 text-sm text-slate-500">Start planning a trip and it will appear here when saved.</p>
+              <button type="button" (click)="backToPlanner()" class="mt-5 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-700">Plan a trip</button>
+            </div>
+          } @else {
+            <div class="grid gap-3 sm:grid-cols-2">
+              @for (conversation of conversations(); track conversation.conversation_id) {
+                <button type="button" (click)="openConversation(conversation.conversation_id)" class="rounded-xl border border-slate-200 bg-white p-5 text-left shadow-sm transition hover:border-blue-300 hover:bg-blue-50">
+                  <div class="flex items-start gap-3">
+                    <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-xl">🧳</span>
+                    <span class="min-w-0 flex-1">
+                      <span class="block truncate font-semibold text-slate-800">{{ conversation.title || 'Untitled trip' }}</span>
+                      <span class="mt-1 block text-sm text-slate-500">Open saved trip conversation</span>
+                    </span>
+                    <span class="text-slate-400">→</span>
+                  </div>
+                </button>
+              }
+            </div>
+          }
+        </div>
+      } @else {
+      <div class="mx-auto flex w-full max-w-4xl flex-col px-4 py-10 sm:px-6 lg:px-8">
+
+        @if (chatMessages().length === 0) {
+          <div class="flex min-h-[calc(100vh-10rem)] items-center justify-center text-center">
+            <div>
+              <div class="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-blue-600 text-3xl shadow-lg shadow-blue-200">
+                ✨
+              </div>
+
+              <h1 class="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
+                Plan your next journey
+              </h1>
+
+              <p class="mx-auto mt-3 max-w-xl text-sm leading-6 text-slate-500 sm:text-base">
+                Tell me where you want to go, your budget, or anything about your trip.
+                I'll figure out what information is needed and help you plan the journey.
+              </p>
+
+              <div class="mx-auto mt-8 grid max-w-2xl gap-3 sm:grid-cols-3">
+                <button
+                  type="button"
+                  (click)="message = 'Plan a trip to Goa'"
+                  class="rounded-xl border border-slate-200 bg-white p-4 text-left text-sm text-slate-600 shadow-sm transition hover:border-blue-300 hover:bg-blue-50">
+                  <span class="mb-2 block text-lg">🌴</span>
+                  Plan a trip to Goa
+                </button>
+
+                <button
+                  type="button"
+                  (click)="message = 'Plan a weekend trip under ₹15,000'"
+                  class="rounded-xl border border-slate-200 bg-white p-4 text-left text-sm text-slate-600 shadow-sm transition hover:border-blue-300 hover:bg-blue-50">
+                  <span class="mb-2 block text-lg">🏔️</span>
+                  Weekend trip under ₹15,000
+                </button>
+
+                <button
+                  type="button"
+                  (click)="message = 'Find affordable flights'"
+                  class="rounded-xl border border-slate-200 bg-white p-4 text-left text-sm text-slate-600 shadow-sm transition hover:border-blue-300 hover:bg-blue-50">
+                  <span class="mb-2 block text-lg">✈️</span>
+                  Find affordable flights
+                </button>
+              </div>
+            </div>
+          </div>
+        }
+
+        @if (chatMessages().length > 0) {
+          <div class="flex flex-col gap-6">
+            @for (chatMessage of chatMessages(); track $index) {
+
+              @if (chatMessage.role === 'user') {
+                <div class="flex justify-end">
+                  <div class="max-w-[80%] whitespace-pre-wrap rounded-2xl rounded-br-md bg-blue-600 px-4 py-3 text-sm leading-6 text-white">
+                    {{ chatMessage.content }}
+                  </div>
+                </div>
+              }
+
+              @if (chatMessage.role === 'assistant') {
+                <div class="flex flex-col items-start gap-3">
+                  <div class="flex max-w-full items-start gap-3">
+                    <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-blue-100 text-lg">
+                      ✨
+                    </div>
+
+                    <div
+                      class="min-w-0 max-w-full rounded-2xl rounded-bl-md border border-slate-200 bg-white px-4 py-3 text-sm leading-6 text-slate-700 shadow-sm"
+                      [class.whitespace-pre-wrap]="!chatMessage.content.startsWith('Would you like to continue with these dates')"
+                      [class.whitespace-nowrap]="chatMessage.content.startsWith('Would you like to continue with these dates')">
+                      {{ chatMessage.content }}
+                    </div>
+                  </div>
+
+                  @if (chatMessage.bookingActions) {
+                    <div class="ml-12 flex flex-wrap gap-3">
+                      <button
+                        type="button"
+                        (click)="sendSuggestedMessage('Find hotels for this trip')"
+                        [disabled]="isLoading()"
+                        class="rounded-xl bg-blue-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-blue-700 disabled:opacity-50">
+                        🏨 Find hotels
+                      </button>
+                      <button
+                        type="button"
+                        (click)="sendSuggestedMessage('Skip hotels and finish my trip plan')"
+                        [disabled]="isLoading()"
+                        class="rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 disabled:opacity-50">
+                        Skip hotels
+                      </button>
+                    </div>
+                  }
+
+                  @if (chatMessage.hotels?.length) {
+                    <div class="ml-0 w-full max-w-3xl space-y-3 sm:ml-12">
+                      <h3 class="text-base font-semibold text-slate-900">Available hotel rates</h3>
+                      @for (hotel of chatMessage.hotels; track hotel.rate_id || hotel.hotel_id || $index) {
+                        <article class="flex flex-col gap-3 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:flex-row">
+                          @if (hotel.image_url) {
+                            <img [src]="hotel.image_url" [alt]="hotel.name" class="h-32 w-full rounded-xl object-cover sm:w-40" />
+                          } @else {
+                            <div class="flex h-32 w-full items-center justify-center rounded-xl bg-slate-100 text-3xl sm:w-40" aria-hidden="true">🏨</div>
+                          }
+                          <div class="min-w-0 flex-1">
+                            <h4 class="font-semibold text-slate-900">{{ hotel.name }}</h4>
+                            @if (hotel.address || hotel.city) {
+                              <p class="mt-1 text-sm text-slate-600">{{ hotel.address || hotel.city }}</p>
+                            }
+                            @if (hotel.room_name) {
+                              <p class="mt-1 text-sm text-slate-600">{{ hotel.room_name }}</p>
+                            }
+                            @if (hotel.rating || hotel.stars) {
+                              <p class="mt-1 text-sm text-slate-600">Rating: {{ hotel.rating || hotel.stars }}</p>
+                            }
+                            <p class="mt-2 font-semibold text-blue-700">
+                              {{ hotel.price !== null && hotel.price !== undefined ? hotel.price : 'Price unavailable' }} {{ hotel.currency || 'INR' }}
+                            </p>
+                            <p class="mt-1 text-xs text-slate-500">Sandbox rate; no hotel booking has been made.</p>
+                            <button
+                              type="button"
+                              (click)="selectHotel(hotel)"
+                              [disabled]="hotelPrebooking"
+                              class="mt-3 rounded-xl px-4 py-2 text-sm font-semibold transition disabled:cursor-wait disabled:opacity-60"
+                              [class.bg-blue-600]="!isSelectedHotel(hotel)"
+                              [class.text-white]="!isSelectedHotel(hotel)"
+                              [class.hover:bg-blue-700]="!isSelectedHotel(hotel)"
+                              [class.bg-blue-100]="isSelectedHotel(hotel)"
+                              [class.text-blue-800]="isSelectedHotel(hotel)">
+                              {{ hotelPrebooking && isSelectedHotel(hotel) ? 'Checking rate…' : (isSelectedHotel(hotel) && hotelPrebookId ? '✓ Rate revalidated' : (isSelectedHotel(hotel) ? 'Retry rate check' : 'Select this room')) }}
+                            </button>
+                          </div>
+                        </article>
+                      }
+                    </div>
+                    @if (hotelPrebookMessage) {
+                      <div class="ml-0 w-full max-w-3xl rounded-xl border border-green-200 bg-green-50 p-4 text-sm text-green-800 sm:ml-12">
+                        <p class="font-semibold">{{ hotelPrebookMessage }}</p>
+                        @if (hotelPrebookPrice !== null && hotelPrebookPrice !== undefined) {
+                          <p class="mt-1">Revalidated price: {{ hotelPrebookPrice }} {{ hotelPrebookCurrency }}</p>
+                        }
+                        @if (hotelPrebookId) {
+                          <p class="mt-1 break-all text-xs">Prebook reference: {{ hotelPrebookId }}</p>
+                        }
+                      </div>
+                    }
+                    @if (hotelPrebookError) {
+                      <div class="ml-0 w-full max-w-3xl rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-800 sm:ml-12">
+                        {{ hotelPrebookError }}
+                      </div>
+                    }
+
+                    @if (hotelPrebookId && !hotelBookingResult) {
+                      <section class="ml-0 w-full max-w-3xl rounded-2xl border border-blue-200 bg-white p-4 shadow-sm sm:ml-12">
+                        <h3 class="text-base font-semibold text-slate-900">Guest details</h3>
+                        <p class="mt-1 text-sm text-slate-600">Enter the lead guest details to confirm this hotel booking. This uses LiteAPI sandbox booking mode; no real card details are collected here.</p>
+                        <form class="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2" (ngSubmit)="bookSelectedHotel()">
+                          <label class="text-sm font-medium text-slate-700">First name
+                            <input name="hotelGuestFirstName" [(ngModel)]="hotelGuest.first_name" required autocomplete="given-name" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 font-normal outline-none focus:border-blue-500" />
+                          </label>
+                          <label class="text-sm font-medium text-slate-700">Last name
+                            <input name="hotelGuestLastName" [(ngModel)]="hotelGuest.last_name" required autocomplete="family-name" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 font-normal outline-none focus:border-blue-500" />
+                          </label>
+                          <label class="text-sm font-medium text-slate-700">Email
+                            <input name="hotelGuestEmail" type="email" [(ngModel)]="hotelGuest.email" required autocomplete="email" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 font-normal outline-none focus:border-blue-500" />
+                          </label>
+                          <label class="text-sm font-medium text-slate-700">Phone (include country code)
+                            <input name="hotelGuestPhone" type="tel" [(ngModel)]="hotelGuest.phone" required autocomplete="tel" placeholder="+91 9876543210" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 font-normal outline-none focus:border-blue-500" />
+                          </label>
+                          <div class="sm:col-span-2 flex flex-wrap items-center gap-3">
+                            <button type="submit" [disabled]="hotelBookingInProgress" class="rounded-xl bg-blue-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-blue-700 disabled:cursor-wait disabled:opacity-60">
+                              {{ hotelBookingInProgress ? 'Confirming booking…' : 'Confirm hotel booking (Sandbox)' }}
+                            </button>
+                            <span class="text-xs text-slate-500">Revalidated price: {{ hotelPrebookPrice ?? selectedHotelOption?.price ?? 'See rate' }} {{ hotelPrebookCurrency }}</span>
+                          </div>
+                        </form>
+                        @if (hotelBookingError) {
+                          <p class="mt-3 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-800">{{ hotelBookingError }}</p>
+                        }
+                      </section>
+                    }
+
+                    @if (hotelBookingResult) {
+                      <section class="hotel-confirmation-card ml-0 w-full max-w-3xl sm:ml-12" aria-label="Hotel booking confirmation">
+                        <div class="hotel-confirmation-header">
+                          <div class="hotel-confirmation-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none">
+                              <path d="M4 20V7.5L12 3l8 4.5V20M2.5 20h19M8 10h1m6 0h1M8 13h1m6 0h1M10 20v-3.5h4V20" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                          </div>
+                          <div class="hotel-confirmation-heading">
+                            <p class="hotel-confirmation-eyebrow">YOUR STAY</p>
+                            <h3>Hotel booking confirmation</h3>
+                            <p class="hotel-confirmation-message">{{ hotelBookingMessage }}</p>
+                          </div>
+                          @if (hotelBookingResult.status) {
+                            <span class="hotel-status-pill">
+                              <span class="hotel-status-dot" aria-hidden="true"></span>
+                              {{ hotelBookingResult.status }}
+                            </span>
+                          }
+                        </div>
+
+                        @if (hotelBookingResult.hotel_name) {
+                          <div class="hotel-confirmation-property">
+                            <span class="hotel-property-icon" aria-hidden="true">⌂</span>
+                            <div class="hotel-property-copy">
+                              <span class="hotel-detail-label">HOTEL</span>
+                              <span class="hotel-detail-value">{{ hotelBookingResult.hotel_name }}</span>
+                            </div>
+                          </div>
+                        }
+
+                        <div class="hotel-confirmation-details">
+                          @if (hotelBookingResult.booking_id) {
+                            <div class="hotel-detail-tile">
+                              <span class="hotel-detail-label">BOOKING ID</span>
+                              <span class="hotel-detail-value hotel-break-all">{{ hotelBookingResult.booking_id }}</span>
+                            </div>
+                          }
+                          @if (hotelBookingResult.hotel_confirmation_code) {
+                            <div class="hotel-detail-tile">
+                              <span class="hotel-detail-label">CONFIRMATION CODE</span>
+                              <span class="hotel-detail-value">{{ hotelBookingResult.hotel_confirmation_code }}</span>
+                            </div>
+                          }
+                        </div>
+
+                        @if (hotelBookingResult.price !== null && hotelBookingResult.price !== undefined) {
+                          <div class="hotel-confirmation-price">
+                            <div>
+                              <span class="hotel-detail-label">FINAL PRICE</span>
+                              <p class="hotel-price-note">Total for your hotel booking</p>
+                            </div>
+                            <p class="hotel-price-value">{{ hotelBookingResult.price | number:'1.2-2' }} <span>{{ hotelBookingResult.currency || 'INR' }}</span></p>
+                          </div>
+                        }
+
+                        <div class="hotel-confirmation-footer">
+                          <span class="hotel-footer-check" aria-hidden="true">✓</span>
+                          <p>Save your booking ID for your records. Confirmed booking status may depend on the LiteAPI sandbox response.</p>
+                        </div>
+                      </section>
+                    }
+                  }
+
+                  @if (chatMessage.suggestedDates?.length) {
+                    <div class="ml-0 w-full max-w-3xl rounded-2xl border border-amber-200 bg-amber-50 p-4 sm:ml-12">
+                      <div class="flex items-start gap-3">
+                        <span class="text-xl" aria-hidden="true">📅</span>
+                        <div class="min-w-0 flex-1">
+                          <h3 class="font-semibold text-slate-900">Alternative travel dates</h3>
+                          <p class="mt-1 text-sm leading-5 text-slate-600">
+                            You can try one of these date ranges. Weather has not been checked for these dates yet.
+                          </p>
+
+                          <div class="mt-3 flex flex-wrap gap-2">
+                            @for (dateRange of chatMessage.suggestedDates; track dateRange.start_date + dateRange.end_date) {
+                              <button
+                                type="button"
+                                (click)="chooseSuggestedDates(dateRange)"
+                                [disabled]="isLoading()"
+                                class="rounded-xl border border-blue-200 bg-white px-3 py-2 text-sm font-medium text-blue-700 transition hover:border-blue-400 hover:bg-blue-50 disabled:cursor-not-allowed disabled:opacity-50">
+                                {{ formatWeatherDate(dateRange.start_date) }} – {{ formatWeatherDate(dateRange.end_date) }}
+                              </button>
+                            }
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  }
+
+
+                  @if (chatMessage.flights?.length && chatMessage.flightDirection) {
+                    <div class="ml-0 w-full max-w-3xl space-y-3 sm:ml-12">
+                      <h3 class="text-base font-semibold text-slate-900">
+                        {{
+                          chatMessage.flightDirection === 'outbound'
+                            ? 'Choose your round trip flight'
+                            : 'Choose your return flight'
+                        }}
+                      </h3>
+
+                      @for (flight of chatMessage.flights; track flight.offer_id || $index; let i = $index) {
+                        <div
+                          class="rounded-2xl border bg-white p-4 shadow-sm transition"
+                          [class.border-blue-600]="isFlightSelected(flight, chatMessage.flightDirection!)"
+                          [class.bg-blue-50]="isFlightSelected(flight, chatMessage.flightDirection!)"
+                          [class.ring-2]="isFlightSelected(flight, chatMessage.flightDirection!)"
+                          [class.ring-blue-200]="isFlightSelected(flight, chatMessage.flightDirection!)"
+                          [class.border-slate-200]="!isFlightSelected(flight, chatMessage.flightDirection!)">
+
+                          <div class="flex flex-wrap items-start justify-between gap-3">
+                            <div>
+                              <p class="font-semibold text-slate-900">
+                                {{ getFlightTitle(flight) }}
+                              </p>
+
+                              <p class="mt-1 text-sm text-slate-500">
+                                @if (getFlightSegmentAt(flight, 0); as outboundSegment) {
+                                  {{ outboundSegment.origin || 'Origin' }}
+                                  →
+                                  {{ outboundSegment.destination || 'Destination' }}
+                                } @else {
+                                  Flight option {{ i + 1 }}
+                                }
+                              </p>
+                            </div>
+
+                            <div class="text-right">
+                              <p class="font-bold text-blue-700">
+                                {{ getFlightPrice(flight) }}
+                              </p>
+                              @if (chatMessage.flightDirection === 'outbound' && hasCompleteRoundTrip(flight)) {
+                                <p class="mt-1 text-xs font-medium text-slate-600">
+                                  Round-trip fare (outbound + return)
+                                </p>
+                              } @else if (chatMessage.flightDirection === 'outbound') {
+                                <p class="mt-1 text-xs font-medium text-amber-700">
+                                  Round-trip fare details unavailable
+                                </p>
+                              } @else {
+                                <p class="mt-1 text-xs font-medium text-slate-600">
+                                  Return-flight fare
+                                </p>
+                              }
+                            </div>
+                          </div>
+
+                          @if (getFlightSegmentAt(flight, 0); as outboundSegment) {
+                            <div class="mt-3 rounded-xl border border-slate-200 bg-slate-50 p-3">
+                              <p class="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-500">
+                                Outbound flight
+                              </p>
+                              <p class="text-sm text-slate-700">
+                                <span class="font-medium">Route:</span>
+                                {{ outboundSegment.origin }} → {{ outboundSegment.destination }}
+                              </p>
+                              <div class="mt-2 grid grid-cols-1 gap-2 text-sm text-slate-600 sm:grid-cols-2">
+                                <p>
+                                  <span class="font-medium">Departure:</span>
+                                  {{ formatFlightDateTime(outboundSegment.departure) }}
+                                </p>
+                                <p>
+                                  <span class="font-medium">Arrival:</span>
+                                  {{ formatFlightDateTime(outboundSegment.arrival) }}
+                                </p>
+                                <p>
+                                  <span class="font-medium">Duration:</span>
+                                  {{ outboundSegment.duration || 'Not provided' }}
+                                </p>
+                                <p>
+                                  <span class="font-medium">Flight:</span>
+                                  {{ outboundSegment.carrier || flight.airline || 'Airline' }}
+                                  {{ outboundSegment.flight_number || '' }}
+                                </p>
+                              </div>
+                            </div>
+                          }
+
+                          @if (chatMessage.flightDirection === 'outbound' && getFlightSegmentAt(flight, 1); as returnSegment) {
+                            <div class="mt-3 rounded-xl border border-blue-100 bg-blue-50 p-3">
+                              <p class="mb-2 text-xs font-semibold uppercase tracking-wide text-blue-700">
+                                Return flight
+                              </p>
+                              <p class="text-sm text-slate-700">
+                                <span class="font-medium">Route:</span>
+                                {{ returnSegment.origin }} → {{ returnSegment.destination }}
+                              </p>
+                              <div class="mt-2 grid grid-cols-1 gap-2 text-sm text-slate-600 sm:grid-cols-2">
+                                <p>
+                                  <span class="font-medium">Departure:</span>
+                                  {{ formatFlightDateTime(returnSegment.departure) }}
+                                </p>
+                                <p>
+                                  <span class="font-medium">Arrival:</span>
+                                  {{ formatFlightDateTime(returnSegment.arrival) }}
+                                </p>
+                                <p>
+                                  <span class="font-medium">Duration:</span>
+                                  {{ returnSegment.duration || 'Not provided' }}
+                                </p>
+                                <p>
+                                  <span class="font-medium">Flight:</span>
+                                  {{ returnSegment.carrier || flight.airline || 'Airline' }}
+                                  {{ returnSegment.flight_number || '' }}
+                                </p>
+                              </div>
+                            </div>
+                          }
+
+                          <button
+                            type="button"
+                            (click)="selectFlight(flight, i, chatMessage.flightDirection!)"
+                            [disabled]="isLoading()"
+                            class="mt-4 rounded-xl px-4 py-2 text-sm font-semibold transition disabled:cursor-not-allowed disabled:bg-slate-300"
+                            [class.bg-blue-600]="!isFlightSelected(flight, chatMessage.flightDirection!)"
+                            [class.text-white]="!isFlightSelected(flight, chatMessage.flightDirection!)"
+                            [class.hover:bg-blue-700]="!isFlightSelected(flight, chatMessage.flightDirection!)"
+                            [class.bg-blue-100]="isFlightSelected(flight, chatMessage.flightDirection!)"
+                            [class.text-blue-800]="isFlightSelected(flight, chatMessage.flightDirection!)">
+                            @if (isFlightSelected(flight, chatMessage.flightDirection!)) {
+                              ✓ Selected — Change selection
+                            } @else {
+                              {{ chatMessage.flightDirection === 'outbound' && hasCompleteRoundTrip(flight)
+                                  ? 'Select round-trip flight'
+                                  : (chatMessage.flightDirection === 'outbound' ? 'Select flight option' : 'Select return flight') }}
+                            }
+                          </button>
+                        </div>
+                      }
+                    </div>
+                  }
+
+                  @if ((chatMessage.selectedOutboundFlight || chatMessage.selectedReturnFlight) && !chatMessage.hotels?.length) {
+                    <div class="ml-0 w-full max-w-3xl rounded-2xl border border-blue-200 bg-white p-5 shadow-sm sm:ml-12">
+                      <h3 class="text-lg font-bold text-slate-900">
+                        Your selected flights
+                      </h3>
+
+                      <p class="mt-1 text-sm text-slate-500">
+                        @if (bookingCreated) {
+                          Test booking created successfully. Check the confirmation above for the booking reference and order ID.
+                        } @else {
+                          Review your outbound and return selections below. No booking or payment has been completed yet.
+                        }
+                      </p>
+
+                      @if (chatMessage.selectedOutboundFlight; as outbound) {
+                        <div class="mt-4 rounded-xl border border-slate-200 bg-slate-50 p-4">
+                          <div class="flex items-center justify-between gap-3">
+                            <h4 class="font-semibold text-slate-800">
+                              ✈️ {{ hasCompleteRoundTrip(outbound) ? 'Round-trip itinerary' : 'Outbound flight' }}
+                            </h4>
+                            <span class="text-sm font-bold text-blue-700">
+                              {{ getFlightPrice(outbound) }}
+                            </span>
+                          </div>
+
+                          <p class="mt-2 font-medium text-slate-800">
+                            {{ getFlightTitle(outbound) }}
+                          </p>
+
+                          @if (getFlightSegment(outbound); as segment) {
+                            <p class="mt-1 text-sm text-slate-600">
+                              {{ segment.origin || 'Origin' }}
+                              → {{ segment.destination || 'Destination' }}
+                            </p>
+
+                            <div class="mt-2 space-y-1 text-sm text-slate-600">
+                              <p>Departure: {{ formatFlightDateTime(segment.departure) }}</p>
+                              <p>Arrival: {{ formatFlightDateTime(segment.arrival) }}</p>
+                            </div>
+                          }
+                        </div>
+                      }
+
+                      @if (chatMessage.selectedReturnFlight; as returnFlight) {
+                        <div class="mt-3 rounded-xl border border-slate-200 bg-slate-50 p-4">
+                          <div class="flex items-center justify-between gap-3">
+                            <h4 class="font-semibold text-slate-800">✈️ Return flight</h4>
+                            <span class="text-sm font-bold text-blue-700">
+                              {{ getFlightPrice(returnFlight) }}
+                            </span>
+                          </div>
+
+                          <p class="mt-2 font-medium text-slate-800">
+                            {{ getFlightTitle(returnFlight) }}
+                          </p>
+
+                          @if (getFlightSegment(returnFlight); as segment) {
+                            <p class="mt-1 text-sm text-slate-600">
+                              {{ segment.origin || 'Origin' }}
+                              → {{ segment.destination || 'Destination' }}
+                            </p>
+
+                            <div class="mt-2 space-y-1 text-sm text-slate-600">
+                              <p>Departure: {{ formatFlightDateTime(segment.departure) }}</p>
+                              <p>Arrival: {{ formatFlightDateTime(segment.arrival) }}</p>
+                            </div>
+                          }
+                        </div>
+                      }
+                    </div>
+                  }
+                </div>
+              }
+            }
+          </div>
+        }
+
+        @if (isLoading()) {
+          <div class="mt-6 flex justify-start">
+            <div class="flex items-center gap-3">
+              <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-100 text-lg">
+                ✨
+              </div>
+              <div class="rounded-2xl rounded-bl-md border border-slate-200 bg-white px-4 py-3 text-sm text-slate-500 shadow-sm">
+                Thinking...
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+      }
+    </section>
+
+    <div [hidden]="showFlightBookings || showHotelBookings || showMyTrips" class="shrink-0 border-t border-slate-200 bg-white px-4 py-4 sm:px-6">
+      <div class="mx-auto w-full max-w-4xl">
+
+        @if (errorMessage()) {
+          <div class="mb-3 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600">
+            {{ errorMessage() }}
+          </div>
+        }
+
+        @if (selectedOutboundFlight && selectedReturnFlight) {
+          <div class="mb-3 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-blue-200 bg-blue-50 p-4">
+            <div>
+              <p class="text-sm font-semibold text-slate-800">Round-trip price summary</p>
+              <p class="mt-1 text-lg font-bold text-blue-700">
+                {{ getCombinedFlightPrice() }}
+              </p>
+              <p class="mt-1 text-xs text-slate-500">
+                Displayed fares only. No booking or payment has been made.
+              </p>
+            </div>
+
+            <button
+              type="button"
+              (click)="openTripReview()"
+              class="rounded-xl bg-blue-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-blue-700">
+              Review trip
+            </button>
+          </div>
+        }
+
+        <div class="rounded-2xl border border-slate-300 bg-white p-2 shadow-sm focus-within:border-blue-400 focus-within:ring-4 focus-within:ring-blue-50">
+          <div class="flex items-end gap-2">
+            <textarea
+              [(ngModel)]="message"
+              rows="1"
+              placeholder="Tell me about your trip..."
+              (keydown.enter)="handleEnterKey($event)"
+              class="max-h-40 min-h-12 flex-1 resize-none border-0 bg-transparent px-3 py-3 text-sm text-slate-800 outline-none placeholder:text-slate-400">
+            </textarea>
+
+            <button
+              type="button"
+              (click)="sendMessage()"
+              [disabled]="!message.trim() || isLoading()"
+              class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-blue-600 text-xl text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-slate-200">
+              @if (isLoading()) {
+                ...
+              } @else {
+                ↑
+              }
+            </button>
+          </div>
+        </div>
+
+        <p class="mt-2 text-center text-xs text-slate-400">
+          Trip Planner can help search, compare and organize your travel plans.
+        </p>
+      </div>
+    </div>
+  </main>
+</div>
+
+@if (reviewTripOpen) {
+  <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+    <div class="max-h-[90vh] w-full max-w-xl overflow-y-auto rounded-2xl bg-white p-6 shadow-2xl">
+      <div class="flex items-start justify-between gap-4">
+        <div>
+          <h2 class="text-xl font-bold text-slate-900">Review your trip</h2>
+          <p class="mt-1 text-sm text-slate-500">
+            Check your selected flights and displayed fares before proceeding.
+          </p>
+        </div>
+
+        <button
+          type="button"
+          (click)="closeTripReview()"
+          class="rounded-lg px-3 py-2 text-slate-500 hover:bg-slate-100">
+          ✕
+        </button>
+      </div>
+
+      @if (selectedOutboundFlight; as outbound) {
+        <div class="mt-5 rounded-xl border border-slate-200 p-4">
+          <div class="flex items-center justify-between gap-3">
+            <h3 class="font-semibold text-slate-800">✈️ Outbound flight</h3>
+            <span class="font-bold text-blue-700">{{ getFlightPrice(outbound) }}</span>
+          </div>
+
+          <p class="mt-2 font-medium text-slate-900">{{ getFlightTitle(outbound) }}</p>
+
+          @if (getFlightSegment(outbound); as segment) {
+            <p class="mt-1 text-sm text-slate-600">
+              {{ segment.origin || 'Origin' }} → {{ segment.destination || 'Destination' }}
+            </p>
+            <p class="mt-2 text-sm text-slate-600">
+              Departure: {{ formatFlightDateTime(segment.departure) }}
+            </p>
+            <p class="mt-1 text-sm text-slate-600">
+              Arrival: {{ formatFlightDateTime(segment.arrival) }}
+            </p>
+          }
+        </div>
+      }
+
+      @if (!selectedReturnFlight && hasCompleteRoundTrip(selectedOutboundFlight)) {
+        <div class="mt-3 rounded-xl border border-slate-200 p-4">
+          <div class="flex items-center justify-between gap-3">
+            <h3 class="font-semibold text-slate-800">✈️ Return flight</h3>
+            <span class="font-bold text-blue-700">Included in round-trip total</span>
+          </div>
+          <p class="mt-2 font-medium text-slate-900">{{ getFlightTitle(selectedOutboundFlight!) }}</p>
+          @if (getFlightSegmentAt(selectedOutboundFlight!, 1); as segment) {
+            <p class="mt-1 text-sm text-slate-600">{{ segment.origin }} → {{ segment.destination }}</p>
+            <p class="mt-2 text-sm text-slate-600">Departure: {{ formatFlightDateTime(segment.departure) }}</p>
+            <p class="mt-1 text-sm text-slate-600">Arrival: {{ formatFlightDateTime(segment.arrival) }}</p>
+          }
+        </div>
+      }
+
+      @if (selectedReturnFlight; as returnFlight) {
+        <div class="mt-3 rounded-xl border border-slate-200 p-4">
+          <div class="flex items-center justify-between gap-3">
+            <h3 class="font-semibold text-slate-800">✈️ Return flight</h3>
+            <span class="font-bold text-blue-700">{{ getFlightPrice(returnFlight) }}</span>
+          </div>
+
+          <p class="mt-2 font-medium text-slate-900">{{ getFlightTitle(returnFlight) }}</p>
+
+          @if (getFlightSegment(returnFlight); as segment) {
+            <p class="mt-1 text-sm text-slate-600">
+              {{ segment.origin || 'Origin' }} → {{ segment.destination || 'Destination' }}
+            </p>
+            <p class="mt-2 text-sm text-slate-600">
+              Departure: {{ formatFlightDateTime(segment.departure) }}
+            </p>
+            <p class="mt-1 text-sm text-slate-600">
+              Arrival: {{ formatFlightDateTime(segment.arrival) }}
+            </p>
+          }
+        </div>
+      }
+
+      <div class="mt-4 rounded-xl bg-blue-50 p-4">
+        <div class="flex items-center justify-between gap-3">
+          <span class="font-semibold text-slate-800">Combined displayed price</span>
+          <span class="text-lg font-bold text-blue-700">{{ getCombinedFlightPrice() }}</span>
+        </div>
+      </div>
+
+      <p class="mt-4 rounded-xl bg-amber-50 p-3 text-sm text-amber-800">
+        This is a trip review only. No flight booking or payment has been made.
+        Fares may change before booking.
+      </p>
+
+      <div class="mt-5 flex flex-wrap justify-end gap-3">
+        <button
+          type="button"
+          (click)="closeTripReview()"
+          class="rounded-xl border border-slate-300 px-5 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">
+          Back to trip
+        </button>
+        <button
+          type="button"
+          (click)="openPassengerDetails()"
+          [disabled]="isLoading()"
+          class="rounded-xl bg-blue-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-slate-300">
+          Passenger details
+        </button>
+      </div>
+    </div>
+  </div>
+}
+
+@if (passengerDetailsOpen) {
+  <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+    <div class="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-2xl bg-white p-6 shadow-2xl">
+      <div class="flex items-start justify-between gap-4">
+        <div>
+          <h2 class="text-xl font-bold text-slate-900">Passenger details</h2>
+          <p class="mt-1 text-sm text-slate-500">
+            Enter the lead passenger's details. These will be sent securely to the planner backend for your Duffel test booking.
+          </p>
+        </div>
+        <button
+          type="button"
+          (click)="closePassengerDetails()"
+          class="rounded-lg px-3 py-2 text-slate-500 hover:bg-slate-100">
+          ✕
+        </button>
+      </div>
+
+      <form class="mt-5 space-y-4" (ngSubmit)="submitPassengerDetails()">
+        <div class="grid gap-4 sm:grid-cols-2">
+          <label class="block text-sm font-medium text-slate-700">
+            First name
+            <input
+              name="given_name"
+              [(ngModel)]="passengerDetails.given_name"
+              required
+              autocomplete="given-name"
+              class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2.5 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100">
+          </label>
+          <label class="block text-sm font-medium text-slate-700">
+            Last name
+            <input
+              name="family_name"
+              [(ngModel)]="passengerDetails.family_name"
+              required
+              autocomplete="family-name"
+              class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2.5 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100">
+          </label>
+          <label class="block text-sm font-medium text-slate-700">
+            Title
+            <select
+              name="title"
+              [(ngModel)]="passengerDetails.title"
+              required
+              class="mt-1 w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 outline-none focus:border-blue-500">
+              <option value="mr">Mr</option>
+              <option value="ms">Ms</option>
+              <option value="mrs">Mrs</option>
+              <option value="mstr">Mstr</option>
+            </select>
+          </label>
+          <label class="block text-sm font-medium text-slate-700">
+            Gender
+            <select
+              name="gender"
+              [(ngModel)]="passengerDetails.gender"
+              required
+              class="mt-1 w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 outline-none focus:border-blue-500">
+              <option value="f">Female</option>
+              <option value="m">Male</option>
+            </select>
+          </label>
+          <label class="block text-sm font-medium text-slate-700">
+            Date of birth
+            <input
+              type="date"
+              name="born_on"
+              [(ngModel)]="passengerDetails.born_on"
+              required
+              [max]="getTodayDate()"
+              autocomplete="bday"
+              class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2.5 outline-none focus:border-blue-500">
+          </label>
+          <label class="block text-sm font-medium text-slate-700">
+            Email
+            <input
+              type="email"
+              name="email"
+              [(ngModel)]="passengerDetails.email"
+              required
+              autocomplete="email"
+              class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2.5 outline-none focus:border-blue-500">
+          </label>
+          <label class="block text-sm font-medium text-slate-700 sm:col-span-2">
+            Phone number (include country code)
+            <input
+              type="tel"
+              name="phone_number"
+              [(ngModel)]="passengerDetails.phone_number"
+              required
+              autocomplete="tel"
+              placeholder="+919876543210"
+              class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2.5 outline-none focus:border-blue-500">
+          </label>
+        </div>
+
+        @if (errorMessage()) {
+          <p class="rounded-lg bg-red-50 p-3 text-sm text-red-700">{{ errorMessage() }}</p>
+        }
+
+        <p class="rounded-xl bg-amber-50 p-3 text-sm text-amber-800">
+          Submitting this form sends a booking request to Duffel Test Mode. Check the Duffel dashboard before retrying if a request times out.
+        </p>
+
+        <div class="flex flex-wrap justify-end gap-3 border-t border-slate-200 pt-4">
+          <button
+            type="button"
+            (click)="closePassengerDetails()"
+            class="rounded-xl border border-slate-300 px-5 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-50">
+            Cancel
+          </button>
+          <button
+            type="submit"
+            [disabled]="isLoading()"
+            class="rounded-xl bg-blue-600 px-5 py-3 text-sm font-semibold text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-slate-300">
+            @if (isLoading()) { Submitting... } @else { Submit details and book test flight }
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+}
+
+@if (calendarOpen) {
+  <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4">
+    <div class="w-full max-w-3xl rounded-3xl bg-white p-6 shadow-2xl">
+
+      <div class="mb-5 flex items-center justify-between">
+        <div>
+          <h2 class="text-xl font-semibold text-slate-900">When</h2>
+          <p class="mt-1 text-sm text-slate-500">Select your travel dates</p>
+        </div>
+
+        <button
+          type="button"
+          (click)="closeCalendar()"
+          class="rounded-full p-2 text-xl text-slate-500 hover:bg-slate-100">
+          ✕
+        </button>
+      </div>
+
+      <div class="mb-5 flex items-center justify-center gap-3">
+        <button
+          type="button"
+          (click)="previousMonth()"
+          class="rounded-full p-2 text-xl text-slate-600 hover:bg-slate-100">
+          ‹
+        </button>
+
+        <span class="text-sm font-medium text-slate-600">Select dates</span>
+
+        <button
+          type="button"
+          (click)="nextMonth()"
+          class="rounded-full p-2 text-xl text-slate-600 hover:bg-slate-100">
+          ›
+        </button>
+      </div>
+
+      <div class="grid gap-8 md:grid-cols-2">
+        <div>
+          <h3 class="mb-4 text-center text-lg font-semibold text-slate-800">
+            {{ getMonthName(calendarMonth) }}
+          </h3>
+
+          <div class="mb-2 grid grid-cols-7 text-center text-xs font-semibold text-slate-400">
+            <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
+          </div>
+
+          <div class="grid grid-cols-7 gap-1">
+            @for (day of getCalendarDays(calendarMonth); track $index) {
+              @if (day.currentMonth) {
+                <button
+                  type="button"
+                  (click)="selectDate(day.date)"
+                  [class.bg-blue-600]="isSelected(day.date)"
+                  [class.text-white]="isSelected(day.date)"
+                  [class.bg-blue-50]="isInRange(day.date)"
+                  [class.text-blue-700]="isInRange(day.date)"
+                  class="h-10 rounded-full text-sm transition hover:bg-blue-100">
+                  {{ day.day }}
+                </button>
+              } @else {
+                <span class="h-10"></span>
+              }
+            }
+          </div>
+        </div>
+
+        <div>
+          <h3 class="mb-4 text-center text-lg font-semibold text-slate-800">
+            {{ getMonthName(getSecondMonth()) }}
+          </h3>
+
+          <div class="mb-2 grid grid-cols-7 text-center text-xs font-semibold text-slate-400">
+            <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
+          </div>
+
+          <div class="grid grid-cols-7 gap-1">
+            @for (day of getCalendarDays(getSecondMonth()); track $index) {
+              @if (day.currentMonth) {
+                <button
+                  type="button"
+                  (click)="selectDate(day.date)"
+                  [class.bg-blue-600]="isSelected(day.date)"
+                  [class.text-white]="isSelected(day.date)"
+                  [class.bg-blue-50]="isInRange(day.date)"
+                  [class.text-blue-700]="isInRange(day.date)"
+                  class="h-10 rounded-full text-sm transition hover:bg-blue-100">
+                  {{ day.day }}
+                </button>
+              } @else {
+                <span class="h-10"></span>
+              }
+            }
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-6 flex items-center justify-between border-t border-slate-200 pt-5">
+        <div class="text-sm text-slate-500">
+          @if (selectedStartDate && selectedEndDate) {
+            {{ formatDisplayDate(selectedStartDate) }} → {{ formatDisplayDate(selectedEndDate) }}
+          } @else if (selectedStartDate) {
+            Select your return date
+          } @else {
+            Select your start date
+          }
+        </div>
+
+        <div class="flex items-center gap-3">
+          <button
+            type="button"
+            (click)="closeCalendar()"
+            class="rounded-xl px-5 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-100">
+            Cancel
+          </button>
+
+          <button
+            type="button"
+            (click)="updateDates()"
+            [disabled]="!selectedStartDate || !selectedEndDate || isLoading()"
+            class="rounded-xl bg-blue-600 px-6 py-2.5 text-sm font-semibold text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-slate-200">
+            Update
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+}

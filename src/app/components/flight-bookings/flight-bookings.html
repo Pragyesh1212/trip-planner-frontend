@@ -1,0 +1,69 @@
+<section class="flight-bookings-page">
+  <div class="page-heading">
+    <div>
+      <p class="eyebrow">MY TRAVEL</p>
+      <h1>Flight bookings</h1>
+      <p class="subtitle">View flight orders saved to your account.</p>
+    </div>
+    <button type="button" class="secondary-button" (click)="onBack()">Back to planner</button>
+  </div>
+
+  <div *ngIf="loading" class="state-card" role="status">
+    <span class="spinner" aria-hidden="true"></span>
+    <p>Loading your flight bookings…</p>
+  </div>
+
+  <div *ngIf="!loading && errorMessage" class="state-card error-card" role="alert">
+    <h2>Couldn't load bookings</h2>
+    <p>{{ errorMessage }}</p>
+    <button type="button" class="primary-button" (click)="loadBookings()">Try again</button>
+  </div>
+
+  <div *ngIf="!loading && !errorMessage && bookings.length === 0" class="state-card empty-card">
+    <div class="plane-icon" aria-hidden="true">✈️</div>
+    <h2>No flight bookings yet</h2>
+    <p>When you create a flight order, it will appear here.</p>
+    <button type="button" class="primary-button" (click)="onBack()">Plan a trip</button>
+  </div>
+
+  <div *ngIf="!loading && !errorMessage && bookings.length > 0" class="booking-list">
+    <article class="booking-card" *ngFor="let booking of bookings; trackBy: trackBooking">
+      <div class="booking-top">
+        <div class="route-details">
+          <p class="provider-label">{{ booking.provider || 'Flight provider' }} · {{ booking.booking_type || 'flight' }}</p>
+          <h2>
+            {{ formatAirport(booking.origin) }}
+            <span class="route-arrow" aria-hidden="true">→</span>
+            {{ formatAirport(booking.destination) }}
+          </h2>
+          <p class="travel-dates">
+            {{ booking.departure_date ? formatDate(booking.departure_date) : 'Travel dates unavailable' }}
+            <ng-container *ngIf="booking.return_date"> – {{ formatDate(booking.return_date) }}</ng-container>
+          </p>
+        </div>
+
+        <div class="price-box">
+          <span>Total price</span>
+          <strong>{{ formatPrice(booking) }}</strong>
+        </div>
+      </div>
+
+      <div class="booking-meta">
+        <div>
+          <span class="meta-label">Booking reference</span>
+          <strong>{{ booking.booking_reference || 'Not provided' }}</strong>
+        </div>
+        <div>
+          <span class="meta-label">Provider order ID</span>
+          <strong>{{ booking.provider_order_id || 'Not provided' }}</strong>
+        </div>
+        <div>
+          <span class="meta-label">Status</span>
+          <span class="status-pill">{{ booking.status || 'unknown' }}</span>
+        </div>
+      </div>
+
+      <p class="created-date">Created {{ formatDate(booking.created_at) }}. Test/sandbox orders may not represent a live ticket.</p>
+    </article>
+  </div>
+</section>
