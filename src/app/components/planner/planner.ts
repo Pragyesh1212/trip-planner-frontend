@@ -53,6 +53,25 @@ interface CalendarDay {
   day: number;
   currentMonth: boolean;
 }
+function generateConversationId(): string {
+  if (
+    typeof crypto !== 'undefined' &&
+    typeof crypto.randomUUID === 'function'
+  ) {
+    return crypto.randomUUID();
+  }
+
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(
+    /[xy]/g,
+    (char) => {
+      const random = Math.floor(Math.random() * 16);
+      const value =
+        char === 'x' ? random : (random & 0x3) | 0x8;
+
+      return value.toString(16);
+    }
+  );
+}
 
 @Component({
   selector: 'app-planner',
@@ -75,7 +94,7 @@ export class Planner implements OnInit {
   chatMessages = signal<ChatMessage[]>([]);
   conversations = signal<SavedConversation[]>([]);
 
-  conversationId: string = crypto.randomUUID();
+  conversationId: string = generateConversationId();
 
   calendarOpen = false;
   selectedStartDate = '';
@@ -225,7 +244,7 @@ export class Planner implements OnInit {
     this.showFlightBookings = false;
     this.showHotelBookings = false;
     this.showMyTrips = false;
-    this.conversationId = crypto.randomUUID();
+    this.conversationId = generateConversationId();
     this.chatMessages.set([]);
     this.selectedOutboundFlight = null;
     this.selectedReturnFlight = null;
