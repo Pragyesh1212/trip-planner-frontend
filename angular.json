@@ -59,7 +59,8 @@
               "buildTarget": "trip-planner:build:production"
             },
             "development": {
-              "buildTarget": "trip-planner:build:development"
+              "buildTarget": "trip-planner:build:development",
+              "proxyConfig": "proxy.conf.json"
             }
           },
           "defaultConfiguration": "development"

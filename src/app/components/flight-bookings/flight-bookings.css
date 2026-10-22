@@ -50,9 +50,7 @@ h1 {
   color: white;
 }
 
-.primary-button:hover {
-  background: #1d4ed8;
-}
+.primary-button:hover { background: #1d4ed8; }
 
 .secondary-button {
   flex-shrink: 0;
@@ -61,9 +59,7 @@ h1 {
   color: #334155;
 }
 
-.secondary-button:hover {
-  background: #f8fafc;
-}
+.secondary-button:hover { background: #f8fafc; }
 
 .state-card {
   display: flex;
@@ -79,192 +75,278 @@ h1 {
   text-align: center;
 }
 
-.state-card p,
-.state-card h2 {
-  margin: 0;
-}
-
-.state-card p {
-  max-width: 620px;
-  color: #64748b;
-  line-height: 1.6;
-}
-
-.state-card h2 {
-  font-size: 1.15rem;
-  font-weight: 700;
-}
-
-.error-card {
-  border-color: #fecaca;
-  background: #fffafa;
-}
-
-.error-card p {
-  color: #b91c1c;
-}
+.state-card p, .state-card h2 { margin: 0; }
+.state-card p { max-width: 620px; color: #64748b; line-height: 1.6; }
+.state-card h2 { font-size: 1.15rem; font-weight: 700; }
+.error-card { border-color: #fecaca; background: #fffafa; }
+.error-card p { color: #b91c1c; }
 
 .spinner {
-  width: 28px;
-  height: 28px;
-  border: 3px solid #dbeafe;
-  border-top-color: #2563eb;
-  border-radius: 50%;
+  width: 28px; height: 28px; border: 3px solid #dbeafe;
+  border-top-color: #2563eb; border-radius: 50%;
   animation: spin 0.8s linear infinite;
 }
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
+@keyframes spin { to { transform: rotate(360deg); } }
 
 .plane-icon {
-  display: flex;
-  width: 56px;
-  height: 56px;
-  align-items: center;
-  justify-content: center;
-  border-radius: 16px;
-  background: #eff6ff;
-  font-size: 1.7rem;
+  display: flex; width: 56px; height: 56px; align-items: center;
+  justify-content: center; border-radius: 16px; background: #eff6ff; font-size: 1.7rem;
 }
 
-.booking-list {
-  display: grid;
-  gap: 1rem;
-}
+.booking-list { display: grid; gap: 1rem; }
 
 .booking-card {
-  border: 1px solid #e2e8f0;
-  border-radius: 1rem;
-  background: white;
-  padding: 1.25rem;
-  box-shadow: 0 2px 5px rgb(15 23 42 / 4%);
+  border: 1px solid #e2e8f0; border-radius: 1rem; background: white;
+  padding: 1.25rem; box-shadow: 0 2px 5px rgb(15 23 42 / 4%);
 }
 
 .booking-top {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 1.25rem;
+  display: flex; align-items: flex-start; justify-content: space-between; gap: 1.25rem;
 }
 
 .provider-label {
-  margin: 0 0 0.4rem;
-  color: #64748b;
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  margin: 0 0 0.4rem; color: #64748b; font-size: 0.72rem;
+  font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
 }
 
 .route-details h2 {
-  margin: 0;
-  font-size: 1.2rem;
-  font-weight: 750;
-  overflow-wrap: anywhere;
+  margin: 0; font-size: 1.2rem; font-weight: 750; overflow-wrap: anywhere;
 }
-
-.route-arrow {
-  color: #2563eb;
-  padding: 0 0.25rem;
-}
-
-.travel-dates {
-  margin: 0.5rem 0 0;
-  color: #64748b;
-  font-size: 0.875rem;
-}
+.route-arrow { color: #2563eb; padding: 0 0.25rem; }
+.travel-dates { margin: 0.5rem 0 0; color: #64748b; font-size: 0.875rem; }
 
 .price-box {
-  flex-shrink: 0;
-  min-width: 140px;
-  border-radius: 0.75rem;
-  background: #eff6ff;
-  padding: 0.8rem 1rem;
-  text-align: right;
+  flex-shrink: 0; min-width: 140px; border-radius: 0.75rem;
+  background: #eff6ff; padding: 0.8rem 1rem; text-align: right;
 }
-
-.price-box span {
-  display: block;
-  color: #64748b;
-  font-size: 0.75rem;
-}
-
+.price-box span { display: block; color: #64748b; font-size: 0.75rem; }
 .price-box strong {
-  display: block;
-  margin-top: 0.25rem;
-  color: #1d4ed8;
-  font-size: 1.05rem;
-  overflow-wrap: anywhere;
+  display: block; margin-top: 0.25rem; color: #1d4ed8;
+  font-size: 1.05rem; overflow-wrap: anywhere;
 }
 
 .booking-meta {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1rem;
-  margin-top: 1.25rem;
-  border-top: 1px solid #f1f5f9;
-  padding-top: 1rem;
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem; margin-top: 1.25rem; border-top: 1px solid #f1f5f9; padding-top: 1rem;
+}
+.booking-meta > div { min-width: 0; }
+.meta-label { display: block; margin-bottom: 0.35rem; color: #94a3b8; font-size: 0.75rem; }
+.booking-meta strong {
+  display: block; color: #334155; font-size: 0.825rem;
+  font-weight: 650; overflow-wrap: anywhere;
+}
+.status-pill {
+  display: inline-block; border-radius: 999px; background: #f1f5f9;
+  padding: 0.25rem 0.65rem; color: #475569; font-size: 0.75rem;
+  font-weight: 650; text-transform: capitalize;
+}
+.created-date { margin: 1rem 0 0; color: #94a3b8; font-size: 0.75rem; line-height: 1.5; }
+
+@media (max-width: 640px) {
+  .flight-bookings-page { padding: 1.25rem 1rem; }
+  .page-heading, .booking-top { flex-direction: column; }
+  .secondary-button { align-self: flex-start; }
+  .price-box { width: 100%; text-align: left; }
+  .booking-meta { grid-template-columns: 1fr; gap: 0.85rem; }
 }
 
-.booking-meta > div {
+/* Only new styles for the expandable details control and panel. */
+.flight-details-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.9rem;
+  padding: 0.45rem 0;
+  border: 0;
+  background: transparent;
+  color: #2563eb;
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 650;
+  cursor: pointer;
+}
+.flight-details-toggle:hover { color: #1d4ed8; }
+.flight-details-toggle span {
+  display: inline-flex; width: 1.25rem; height: 1.25rem;
+  align-items: center; justify-content: center; border-radius: 50%;
+  background: #eff6ff; font-size: 1rem;
+}
+.flight-details-toggle:focus-visible { outline: 2px solid #2563eb; outline-offset: 3px; }
+
+.flight-details-panel {
+  margin-top: 0.75rem;
+  padding: 1rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.75rem;
+  background: #f8fafc;
+}
+.flight-details-panel h3 { margin: 0 0 0.9rem; color: #0f172a; font-size: 1rem; font-weight: 700; }
+.flight-details-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+.flight-detail-item { display: flex; min-width: 0; flex-direction: column; gap: 0.3rem; }
+.flight-detail-item span, .flight-detail-item small, .flight-details-note { color: #64748b; font-size: 0.75rem; }
+.flight-detail-item strong { color: #334155; font-size: 0.825rem; overflow-wrap: anywhere; }
+.flight-details-note { margin: 1rem 0 0; line-height: 1.5; }
+@media (max-width: 640px) { .flight-details-grid { grid-template-columns: 1fr; } }
+
+
+/* Passenger and segment details inside the expandable panel. */
+.detail-section { margin-top: 1.25rem; }
+.detail-section h4 { margin: 0 0 0.75rem; color: #0f172a; font-size: 0.9rem; font-weight: 750; }
+.detail-section h5 { margin: 0 0 0.65rem; color: #334155; font-size: 0.8rem; font-weight: 700; }
+.passenger-card, .segment-card {
+  margin-top: 0.7rem;
+  padding: 0.9rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.65rem;
+  background: #fff;
+}
+.passenger-card-heading {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 0.75rem; margin-bottom: 0.9rem; flex-wrap: wrap;
+}
+.passenger-card-heading > strong, .segment-card > strong {
+  color: #0f172a; font-size: 0.85rem; overflow-wrap: anywhere;
+}
+.segment-group { margin-top: 0.9rem; }
+.passenger-baggage { margin-top: 0.8rem; }
+.passenger-baggage strong { overflow-wrap: anywhere; white-space: pre-wrap; }
+
+
+/* Passenger details panel: additive styles only; existing booking styles are unchanged. */
+.passenger-details-section {
+  margin-top: 1.25rem;
+  padding-top: 1.15rem;
+  border-top: 1px solid #e2e8f0;
+}
+.passenger-section-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.85rem;
+}
+.passenger-eyebrow {
+  color: #2563eb;
+  font-size: 0.68rem;
+  font-weight: 750;
+  letter-spacing: 0.08em;
+}
+.passenger-section-heading h4 {
+  margin: 0.2rem 0 0;
+  color: #0f172a;
+  font-size: 1rem;
+  font-weight: 750;
+}
+.passenger-count {
+  flex-shrink: 0;
+  border-radius: 999px;
+  background: #eff6ff;
+  padding: 0.35rem 0.65rem;
+  color: #1d4ed8;
+  font-size: 0.72rem;
+  font-weight: 650;
+}
+.passenger-details-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.8rem;
+}
+.passenger-detail-card {
+  display: flex;
+  gap: 0.75rem;
+  min-width: 0;
+  padding: 0.9rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.8rem;
+  background: #fff;
+}
+.passenger-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 2.35rem;
+  width: 2.35rem;
+  height: 2.35rem;
+  border-radius: 50%;
+  background: #eaf2ff;
+  color: #1d4ed8;
+  font-size: 0.9rem;
+  font-weight: 750;
+}
+.passenger-detail-content {
+  flex: 1;
   min-width: 0;
 }
-
-.meta-label {
+.passenger-detail-content > strong {
   display: block;
-  margin-bottom: 0.35rem;
-  color: #94a3b8;
-  font-size: 0.75rem;
-}
-
-.booking-meta strong {
-  display: block;
-  color: #334155;
-  font-size: 0.825rem;
-  font-weight: 650;
   overflow-wrap: anywhere;
+  color: #0f172a;
+  font-size: 0.85rem;
+  font-weight: 700;
 }
-
-.status-pill {
+.passenger-type {
   display: inline-block;
-  border-radius: 999px;
-  background: #f1f5f9;
-  padding: 0.25rem 0.65rem;
-  color: #475569;
-  font-size: 0.75rem;
-  font-weight: 650;
-  text-transform: capitalize;
+  margin-top: 0.2rem;
+  color: #64748b;
+  font-size: 0.72rem;
 }
-
-.created-date {
-  margin: 1rem 0 0;
-  color: #94a3b8;
+.passenger-detail-fields {
+  display: grid;
+  gap: 0.6rem;
+  margin-top: 0.75rem;
+}
+.passenger-detail-fields > div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+}
+.passenger-detail-fields span {
+  color: #64748b;
+  font-size: 0.68rem;
+}
+.passenger-detail-fields strong {
+  overflow-wrap: anywhere;
+  color: #334155;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+.passenger-unavailable {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.9rem;
+  border: 1px dashed #cbd5e1;
+  border-radius: 0.8rem;
+  background: #f8fafc;
+}
+.passenger-unavailable-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 2rem;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 0.6rem;
+  background: #e2e8f0;
+  color: #64748b;
+  font-size: 1.1rem;
+}
+.passenger-unavailable strong {
+  color: #334155;
+  font-size: 0.78rem;
+}
+.passenger-unavailable p {
+  margin: 0.25rem 0 0;
+  color: #64748b;
   font-size: 0.75rem;
   line-height: 1.5;
 }
-
 @media (max-width: 640px) {
-  .flight-bookings-page {
-    padding: 1.25rem 1rem;
-  }
-
-  .page-heading,
-  .booking-top {
-    flex-direction: column;
-  }
-
-  .secondary-button {
-    align-self: flex-start;
-  }
-
-  .price-box {
-    width: 100%;
-    text-align: left;
-  }
-
-  .booking-meta {
+  .passenger-details-grid {
     grid-template-columns: 1fr;
-    gap: 0.85rem;
+  }
+  .passenger-section-heading {
+    align-items: flex-start;
   }
 }

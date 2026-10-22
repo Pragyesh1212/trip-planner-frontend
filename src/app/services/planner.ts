@@ -146,7 +146,7 @@ export interface PlannerMessageResponse {
   providedIn: 'root'
 })
 export class PlannerService {
-  private readonly apiUrl = 'http://127.0.0.1:8000/planner';
+  private readonly apiUrl = 'api/v1/planner';
 
   constructor(private http: HttpClient) {}
 
@@ -184,6 +184,13 @@ getConversations(): Observable<{ conversations: SavedConversation[] }> {
 
   getConversation(conversationId: string): Observable<SavedConversation> {
     return this.http.get<SavedConversation>(
+      `${this.apiUrl}/history/${encodeURIComponent(conversationId)}`,
+      { headers: this.authHeaders() }
+    );
+  }
+
+  deleteConversation(conversationId: string): Observable<{ success: boolean; soft_deleted?: boolean }> {
+    return this.http.delete<{ success: boolean; soft_deleted?: boolean }>(
       `${this.apiUrl}/history/${encodeURIComponent(conversationId)}`,
       { headers: this.authHeaders() }
     );

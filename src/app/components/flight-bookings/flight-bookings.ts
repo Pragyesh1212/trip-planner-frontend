@@ -16,6 +16,30 @@ export interface AirportSummary {
   name?: string | null;
 }
 
+export interface PassengerRecord {
+  id?: string | null;
+  name?: string | null;
+  full_name?: string | null;
+  first_name?: string | null;
+  last_name?: string | null;
+  given_name?: string | null;
+  family_name?: string | null;
+  passenger_type?: string | null;
+  type?: string | null;
+  email?: string | null;
+  phone?: string | null;
+  phone_number?: string | null;
+  ticket_number?: string | null;
+  ticketNumber?: string | null;
+  seat?: string | null;
+  seat_number?: string | null;
+  cabin_class?: string | null;
+  cabin?: string | null;
+  baggage_allowance?: string | null;
+  baggage?: string | null;
+  [key: string]: unknown;
+}
+
 export interface FlightBookingRecord {
   booking_id?: string;
   provider?: string | null;
@@ -31,6 +55,9 @@ export interface FlightBookingRecord {
   status?: string | null;
   created_at?: string | null;
   converted_price_inr?: number;
+  passengers?: PassengerRecord[] | null;
+  passenger_details?: PassengerRecord[] | null;
+  passenger?: PassengerRecord[] | null;
 }
 
 interface FlightBookingsResponse {
@@ -52,11 +79,12 @@ interface ExchangeRateResponse {
 export class FlightBookingsComponent implements OnInit {
   @Output() back = new EventEmitter<void>();
 
-  private readonly apiUrl = 'http://127.0.0.1:8000/planner';
+  private readonly apiUrl = '/api/v1/planner';
   private readonly exchangeRateApiUrl =
     'https://open.er-api.com/v6/latest';
 
   bookings: FlightBookingRecord[] = [];
+  selectedBookingId: string | null = null;
   loading = false;
   errorMessage = '';
 
@@ -193,6 +221,51 @@ export class FlightBookingsComponent implements OnInit {
           this.cdr.detectChanges();
         }
       });
+  }
+
+  toggleBookingDetails(booking: FlightBookingRecord, index: number): void {
+    const id = this.trackBooking(index, booking);
+    this.selectedBookingId = this.selectedBookingId === id ? null : id;
+  }
+
+  isBookingExpanded(booking: FlightBookingRecord, index: number): boolean {
+    return this.selectedBookingId === this.trackBooking(index, booking);
+  }
+
+  getPassengers(booking: FlightBookingRecord): PassengerRecord[] {
+    const candidates = [
+      booking.passengers,
+      booking.passenger_details,
+      booking.passenger
+    ];
+
+    for (const candidate of candidates) {
+      if (Array.isArray(candidate)) {
+        return candidate.filter(
+          (item): item is PassengerRecord =>
+            !!item && typeof item === 'object'
+        );
+      }
+    }
+
+    return [];
+  }
+
+  passengerName(passenger: PassengerRecord, index: number): string {
+    const fullName = passenger.full_name || passenger.name;
+    if (typeof fullName === 'string' && fullName.trim()) {
+      return fullName.trim();
+    }
+
+    const firstName = passenger.first_name || passenger.given_name || '';
+    const lastName = passenger.last_name || passenger.family_name || '';
+    const combinedName = `${firstName} ${lastName}`.trim();
+
+    return combinedName || `Passenger ${index + 1}`;
+  }
+
+  trackPassenger(index: number, passenger: PassengerRecord): string {
+    return passenger.id || passenger.ticket_number || `${this.passengerName(passenger, index)}-${index}`;
   }
 
   onBack(): void {

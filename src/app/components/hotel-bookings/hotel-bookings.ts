@@ -29,7 +29,7 @@ export class HotelBookings implements OnInit {
   readonly loading = signal(true);
   readonly errorMessage = signal('');
   // Match this URL to the backend base URL used by your PlannerService if different.
-  private readonly apiUrl = 'http://127.0.0.1:8000/planner/hotel-bookings';
+  private readonly apiUrl = '/api/v1/planner/hotel-bookings';
 
   constructor(private readonly http: HttpClient) {}
 

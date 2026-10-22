@@ -27,7 +27,7 @@
   </div>
 
   <div *ngIf="!loading && !errorMessage && bookings.length > 0" class="booking-list">
-    <article class="booking-card" *ngFor="let booking of bookings; trackBy: trackBooking">
+    <article class="booking-card" *ngFor="let booking of bookings; let i = index; trackBy: trackBooking">
       <div class="booking-top">
         <div class="route-details">
           <p class="provider-label">{{ booking.provider || 'Flight provider' }} · {{ booking.booking_type || 'flight' }}</p>
@@ -62,6 +62,107 @@
           <span class="status-pill">{{ booking.status || 'unknown' }}</span>
         </div>
       </div>
+
+      <button
+        type="button"
+        class="flight-details-toggle"
+        (click)="toggleBookingDetails(booking, i)"
+        [attr.aria-expanded]="isBookingExpanded(booking, i)"
+      >
+        {{ isBookingExpanded(booking, i) ? 'Hide round-trip details' : 'View round-trip details' }}
+        <span aria-hidden="true">{{ isBookingExpanded(booking, i) ? '−' : '+' }}</span>
+      </button>
+
+      <section *ngIf="isBookingExpanded(booking, i)" class="flight-details-panel">
+        <h3>Round-trip details</h3>
+        <div class="flight-details-grid">
+          <div class="flight-detail-item">
+            <span>Outbound journey</span>
+            <strong>{{ formatAirport(booking.origin) }} → {{ formatAirport(booking.destination) }}</strong>
+            <small>{{ booking.departure_date ? formatDate(booking.departure_date) : 'Departure date not available' }}</small>
+          </div>
+          <div class="flight-detail-item">
+            <span>Return journey</span>
+            <strong>{{ booking.return_date ? (formatAirport(booking.destination) + ' → ' + formatAirport(booking.origin)) : 'Return details not available' }}</strong>
+            <small>{{ booking.return_date ? formatDate(booking.return_date) : 'No return date in saved booking' }}</small>
+          </div>
+          <div class="flight-detail-item">
+            <span>Booking reference</span>
+            <strong>{{ booking.booking_reference || 'Not provided' }}</strong>
+          </div>
+          <div class="flight-detail-item">
+            <span>Provider order ID</span>
+            <strong>{{ booking.provider_order_id || 'Not provided' }}</strong>
+          </div>
+          <div class="flight-detail-item">
+            <span>Provider</span>
+            <strong>{{ booking.provider || 'Not provided' }}</strong>
+          </div>
+          <div class="flight-detail-item">
+            <span>Total price</span>
+            <strong>{{ formatPrice(booking) }}</strong>
+          </div>
+        </div>
+        <section class="passenger-details-section">
+          <div class="passenger-section-heading">
+            <div>
+              <span class="passenger-eyebrow">TRAVELLERS</span>
+              <h4>Passenger details</h4>
+            </div>
+            <span class="passenger-count">{{ getPassengers(booking).length }} passenger(s)</span>
+          </div>
+
+          <div class="passenger-details-grid" *ngIf="getPassengers(booking).length > 0; else passengerDetailsUnavailable">
+            <article
+              class="passenger-detail-card"
+              *ngFor="let passenger of getPassengers(booking); let passengerIndex = index; trackBy: trackPassenger"
+            >
+              <div class="passenger-avatar" aria-hidden="true">{{ passengerName(passenger, passengerIndex).charAt(0).toUpperCase() }}</div>
+              <div class="passenger-detail-content">
+                <strong>{{ passengerName(passenger, passengerIndex) }}</strong>
+                <span class="passenger-type">{{ passenger.passenger_type || passenger.type || 'Passenger' }}</span>
+
+                <div class="passenger-detail-fields">
+                  <div *ngIf="passenger.email">
+                    <span>Email</span>
+                    <strong>{{ passenger.email }}</strong>
+                  </div>
+                  <div *ngIf="passenger.phone || passenger.phone_number">
+                    <span>Phone</span>
+                    <strong>{{ passenger.phone || passenger.phone_number }}</strong>
+                  </div>
+                  <div *ngIf="passenger.ticket_number || passenger.ticketNumber">
+                    <span>Ticket number</span>
+                    <strong>{{ passenger.ticket_number || passenger.ticketNumber }}</strong>
+                  </div>
+                  <div *ngIf="passenger.seat || passenger.seat_number">
+                    <span>Seat</span>
+                    <strong>{{ passenger.seat || passenger.seat_number }}</strong>
+                  </div>
+                  <div *ngIf="passenger.cabin_class || passenger.cabin">
+                    <span>Cabin class</span>
+                    <strong>{{ passenger.cabin_class || passenger.cabin }}</strong>
+                  </div>
+                  <div *ngIf="passenger.baggage_allowance || passenger.baggage">
+                    <span>Baggage</span>
+                    <strong>{{ passenger.baggage_allowance || passenger.baggage }}</strong>
+                  </div>
+                </div>
+              </div>
+            </article>
+          </div>
+
+          <ng-template #passengerDetailsUnavailable>
+            <div class="passenger-unavailable">
+              <span class="passenger-unavailable-icon" aria-hidden="true">♙</span>
+              <div>
+                <strong>Passenger information isn't available yet</strong>
+                <p>The saved booking response does not currently include passenger details. They will appear here when the backend saves and returns them.</p>
+              </div>
+            </div>
+          </ng-template>
+        </section>
+      </section>
 
       <p class="created-date">Created {{ formatDate(booking.created_at) }}. Test/sandbox orders may not represent a live ticket.</p>
     </article>

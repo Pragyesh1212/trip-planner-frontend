@@ -62,8 +62,7 @@ interface ResetPasswordResponse {
 })
 export class AuthenticationService {
 
-  private readonly apiUrl =
-    'http://127.0.0.1:8000/authentication';
+  private readonly apiUrl ='/api/v1/authentication';
 
   private readonly tokenKey =
     'access_token';
@@ -74,9 +73,7 @@ export class AuthenticationService {
   ) {}
 
 
-  signup(
-    user: SignupRequest
-  ): Observable<SignupResponse> {
+  signup(user: SignupRequest): Observable<SignupResponse> {
 
     return this.http.post<SignupResponse>(
       `${this.apiUrl}/signup`,

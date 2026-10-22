@@ -94,6 +94,8 @@ export class Planner implements OnInit {
   // Compare hotel options by LiteAPI offer ID, not object identity.
   selectedHotelOfferId: string | null = null;
   hotelPrebooking = false;
+  // Signal trigger ensures hotel API callbacks schedule a template refresh.
+  hotelUiVersion = signal(0);
   hotelPrebookMessage = '';
   hotelPrebookError = '';
   hotelPrebookId: string | null = null;
@@ -119,6 +121,10 @@ export class Planner implements OnInit {
     phone_number: ''
   };
   private nextVisibleUserMessage: string | null = null;
+  openingConversationId: string | null = null;
+  openConversationMenuId: string | null = null;
+  pendingDeleteConversationId: string | null = null;
+  pendingDeleteConversationTitle = '';
 
   constructor(
     private authenticationService: AuthenticationService,
@@ -168,6 +174,53 @@ export class Planner implements OnInit {
     });
   }
 
+  toggleConversationMenu(conversationId: string, event?: Event): void {
+    event?.stopPropagation();
+    this.openConversationMenuId =
+      this.openConversationMenuId === conversationId ? null : conversationId;
+  }
+
+  requestDeleteConversation(conversationId: string, event?: Event): void {
+    event?.stopPropagation();
+    const conversation = this.conversations().find(
+      item => item.conversation_id === conversationId
+    );
+    this.pendingDeleteConversationId = conversationId;
+    this.pendingDeleteConversationTitle = conversation?.title || 'this conversation';
+    this.openConversationMenuId = null;
+  }
+
+  cancelDeleteConversation(): void {
+    this.pendingDeleteConversationId = null;
+    this.pendingDeleteConversationTitle = '';
+  }
+
+  confirmDeleteConversation(): void {
+    const conversationId = this.pendingDeleteConversationId;
+    if (!conversationId) return;
+
+    this.plannerService.deleteConversation(conversationId).subscribe({
+      next: () => {
+        this.conversations.update(items =>
+          items.filter(item => item.conversation_id !== conversationId)
+        );
+        this.cancelDeleteConversation();
+
+        // If the hidden chat is currently open, start a fresh chat view.
+        if (this.conversationId === conversationId) {
+          this.newTrip();
+        }
+      },
+      error: error => {
+        console.error('Could not hide conversation:', error);
+        this.cancelDeleteConversation();
+        this.errorMessage.set(
+          error.error?.detail || 'Unable to delete this conversation. Please try again.'
+        );
+      }
+    });
+  }
+
   newTrip(): void {
     this.showFlightBookings = false;
     this.showHotelBookings = false;
@@ -191,22 +244,63 @@ export class Planner implements OnInit {
     this.sidebarOpen = window.innerWidth >= 1024;
   }
 
+
+
   openConversation(conversationId: string): void {
+    if (this.openingConversationId) {
+      return;
+    }
+
+    this.openingConversationId = conversationId;
+
     this.plannerService.getConversation(conversationId).subscribe({
       next: conversation => {
-        this.conversationId = conversation.conversation_id;
-        this.chatMessages.set((conversation.messages || []) as ChatMessage[]);
-        this.selectedOutboundFlight = null;
-        this.selectedReturnFlight = null;
-        this.reviewTripOpen = false;
-        this.passengerDetailsOpen = false;
-        this.bookingCreated = false;
-        this.errorMessage.set('');
-        this.sidebarOpen = window.innerWidth >= 1024;
+        this.ngZone.run(() => {
+          this.conversationId =
+            conversation.conversation_id || conversationId;
+
+          const messages = Array.isArray(conversation.messages)
+            ? conversation.messages
+            : [];
+
+          this.chatMessages.set(
+            messages.map((item: any) => ({
+              ...item,
+              role: item.role === 'user' ? 'user' : 'assistant',
+              content: String(item.content ?? '')
+            })) as ChatMessage[]
+          );
+
+          // Switch to the chat view.
+          this.showMyTrips = false;
+          this.showFlightBookings = false;
+          this.showHotelBookings = false;
+
+          // Reset temporary booking UI state.
+          this.selectedOutboundFlight = null;
+          this.selectedReturnFlight = null;
+          this.reviewTripOpen = false;
+          this.passengerDetailsOpen = false;
+          this.bookingCreated = false;
+          this.errorMessage.set('');
+
+          this.openingConversationId = null;
+
+          // Refresh the view immediately.
+          this.cdr.detectChanges();
+        });
       },
       error: error => {
-        console.error('Could not open conversation:', error);
-        this.errorMessage.set('Unable to open this conversation. Please try again.');
+        this.ngZone.run(() => {
+          console.error('Could not open conversation:', error);
+
+          this.errorMessage.set(
+            'Unable to open this conversation. Please try again.'
+          );
+
+          this.openingConversationId = null;
+          this.cdr.detectChanges();
+        });
       }
     });
   }
@@ -520,6 +614,13 @@ export class Planner implements OnInit {
     return !!id && id === this.selectedHotelOfferId;
   }
 
+  private refreshHotelUi(): void {
+    // Updating a signal schedules change detection even if an API callback
+    // originates outside Angular's normal change-detection cycle.
+    this.hotelUiVersion.update(version => version + 1);
+    this.cdr.detectChanges();
+  }
+
   selectHotel(hotel: HotelOption): void {
     // Log before the guard so we can tell whether the HTML click binding fires.
     console.log('[HOTEL DEBUG] selectHotel called');
@@ -545,7 +646,7 @@ export class Planner implements OnInit {
     this.hotelPrebookError = '';
     this.hotelPrebookId = null;
     this.hotelPrebookPrice = null;
-    this.cdr.detectChanges();
+    this.refreshHotelUi();
 
     console.debug('[HOTEL DEBUG] Sending prebook request', {
       hasOfferId: !!hotel.offer_id,
@@ -564,7 +665,7 @@ export class Planner implements OnInit {
           // so the non-signal template fields refresh even in zoneless/custom setups.
           this.ngZone.run(() => {
             this.hotelPrebooking = false;
-            this.cdr.detectChanges();
+            this.refreshHotelUi();
             console.debug('[HOTEL DEBUG] Prebook request finalized; loading cleared');
           });
         })
@@ -579,7 +680,7 @@ export class Planner implements OnInit {
                 result?.error ||
                 result?.message ||
                 'LiteAPI could not revalidate this room. Please choose another rate.';
-              this.cdr.detectChanges();
+              this.refreshHotelUi();
               return;
             }
 
@@ -588,7 +689,7 @@ export class Planner implements OnInit {
             this.hotelPrebookCurrency = result.currency || hotel.currency || 'INR';
             this.hotelPrebookMessage =
               'Room rate revalidated successfully. No hotel reservation has been made and no payment has been taken.';
-            this.cdr.detectChanges();
+            this.refreshHotelUi();
           });
         },
         error: (error) => {
@@ -603,7 +704,7 @@ export class Planner implements OnInit {
               error?.error?.message ||
               'Could not revalidate this room. Please try again.';
             console.error('[HOTEL DEBUG] Prebook request failed', error);
-            this.cdr.detectChanges();
+            this.refreshHotelUi();
           });
         }
       });
@@ -636,7 +737,7 @@ export class Planner implements OnInit {
     this.hotelBookingError = '';
     this.hotelBookingMessage = '';
     this.hotelBookingResult = null;
-    this.cdr.detectChanges();
+    this.refreshHotelUi();
 
     this.plannerService.bookHotel({
       prebook_id: this.hotelPrebookId,
@@ -649,7 +750,7 @@ export class Planner implements OnInit {
       finalize(() => {
         this.ngZone.run(() => {
           this.hotelBookingInProgress = false;
-          this.cdr.detectChanges();
+          this.refreshHotelUi();
         });
       })
     ).subscribe({
@@ -667,7 +768,7 @@ export class Planner implements OnInit {
               result?.error || result?.message ||
               'LiteAPI did not return a confirmed booking ID. Please check the booking response before retrying.';
             this.hotelBookingResult = null;
-            this.cdr.detectChanges();
+            this.refreshHotelUi();
             return;
           }
 
@@ -676,7 +777,7 @@ export class Planner implements OnInit {
           this.hotelBookingMessage = result.message || 'Hotel booking confirmation received.';
           this.hotelBookingError = '';
           this.hotelPrebookId = null;
-          this.cdr.detectChanges();
+          this.refreshHotelUi();
         });
       },
       error: (error) => {
@@ -691,7 +792,7 @@ export class Planner implements OnInit {
             message: this.hotelBookingError,
             body: error?.error
           });
-          this.cdr.detectChanges();
+          this.refreshHotelUi();
         });
       }
     });
