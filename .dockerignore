@@ -1,0 +1,14 @@
+
+node_modules/
+dist/
+.angular/
+.git/
+.gitignore
+.vscode/
+.idea/
+coverage/
+*.log
+
+.env
+.env.*
+!.env.example
