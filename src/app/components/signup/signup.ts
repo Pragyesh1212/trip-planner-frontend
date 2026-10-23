@@ -104,15 +104,30 @@ export class Signup {
       },
 
 
+      
       error: (error) => {
-
         this.isLoading = false;
 
-        this.errorMessage =
-          error.error?.detail ||
-          'Signup failed. Please try again.';
+        const detail = error.error?.detail;
 
+        if (
+          typeof detail === 'string' &&
+          detail.toLowerCase().includes('email already registered')
+        ) {
+          this.errorMessage =
+            'Email already registered. Redirecting to login...';
+
+          setTimeout(() => {
+            this.router.navigate(['/login']);
+          }, 1000);
+
+          return;
+        }
+
+        this.errorMessage =
+          detail || 'Signup failed. Please try again.';
       }
+
 
     });
 
